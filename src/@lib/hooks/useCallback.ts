@@ -1,10 +1,25 @@
-/* eslint-disable @typescript-eslint/no-unused-vars,@typescript-eslint/no-unsafe-function-type */
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import { DependencyList } from "react";
+import { useRef } from "./useRef";
+import { shallowEquals } from "../equalities";
 
 export function useCallback<T extends Function>(
   factory: T,
   _deps: DependencyList,
 ) {
-  // 직접 작성한 useMemo를 통해서 만들어보세요.
-  return factory as T;
+  const memoizedRef = useRef<{ callback: T; _deps: DependencyList } | null>(
+    null,
+  );
+
+  if (
+    memoizedRef.current === null ||
+    !shallowEquals(memoizedRef.current._deps, _deps)
+  ) {
+    memoizedRef.current = {
+      callback: factory,
+      _deps,
+    };
+  }
+
+  return memoizedRef.current.callback;
 }
