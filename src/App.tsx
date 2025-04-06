@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { generateItems } from "./utils";
 import { AppContext } from "./contexts";
 import type { AppContextType } from "./contexts";
-import type { User } from "./types";
+import type { User, Notification } from "./types";
 import {
   Header,
   ItemList,
@@ -10,13 +10,6 @@ import {
   NotificationSystem,
 } from "./components";
 
-interface Notification {
-  id: number;
-  message: string;
-  type: "info" | "success" | "warning" | "error";
-}
-
-// 메인 App 컴포넌트
 const App: React.FC = () => {
   const [theme, setTheme] = useState("light");
   const [items, setItems] = useState(generateItems(1000));
