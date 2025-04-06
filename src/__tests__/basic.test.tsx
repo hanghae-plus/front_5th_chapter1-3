@@ -31,6 +31,9 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         expect(shallowEquals("안녕", "잘가")).toBe(false);
         expect(shallowEquals(true, false)).toBe(false);
         expect(shallowEquals(null, undefined)).toBe(false);
+        expect(shallowEquals(-0, +0)).toBe(false);
+        expect(shallowEquals(Number.NaN, NaN)).toBe(true);
+        expect(shallowEquals(NaN, 0 / 0)).toBe(true);
       });
 
       it("배열을 얕게 비교해야 한다", () => {
@@ -128,7 +131,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
           <>
             <UseMyRefTest label="rerender1" />
             <UseMyRefTest label="rerender2" />
-          </>,
+          </>
         );
 
         act(() => {
@@ -652,7 +655,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
       it("깊은 객체 비교를 수행해야 한다", () => {
         const DeepMemoizedComponent = deepMemo(TestComponent);
         const { rerender } = render(
-          <DeepMemoizedComponent value={{ a: { b: 1 } }} />,
+          <DeepMemoizedComponent value={{ a: { b: 1 } }} />
         );
 
         expect(TestComponent).toHaveBeenCalledTimes(1);
@@ -667,7 +670,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
       it("깊은 배열 비교를 수행해야 한다", () => {
         const DeepMemoizedComponent = deepMemo(TestComponent);
         const { rerender } = render(
-          <DeepMemoizedComponent value={[1, [2, 3]]} />,
+          <DeepMemoizedComponent value={[1, [2, 3]]} />
         );
 
         expect(TestComponent).toHaveBeenCalledTimes(1);

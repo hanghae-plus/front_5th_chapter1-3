@@ -102,7 +102,7 @@ export const ItemList: React.FC<{
   const filteredItems = items.filter(
     (item) =>
       item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase())
+      item.category.toLowerCase().includes(filter.toLowerCase()),
   );
 
   console.log("filteredItems", shallowEquals(filteredItems, items));
@@ -308,7 +308,7 @@ const App: React.FC = () => {
 
   const removeNotification = (id: number) => {
     setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id)
+      prev.filter((notification) => notification.id !== id),
     );
   };
 
