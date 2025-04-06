@@ -1,10 +1,30 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from "react";
+import { useMemo } from "../hooks/useMemo";
 import { shallowEquals } from "../equalities";
-import { ComponentType } from "react";
+
+type CompareFunction<P> = (prevProps: P, nextProps: P) => boolean;
 
 export function memo<P extends object>(
-  Component: ComponentType<P>,
-  _equals = shallowEquals,
-) {
-  return Component;
+  Component: React.ComponentType<P>,
+  compare?: CompareFunction<P>,
+): React.ComponentType<P> {
+  return (props: P) => {
+    const factory = () => React.createElement(Component, props);
+    return useMemo(factory, [props], (prevDeps, nextDeps) => {
+      return compareDeps<P>(prevDeps, nextDeps, compare);
+      // TODO: 타입수정하기!
+    });
+  };
+}
+
+function compareDeps<P>(
+  prevDeps: React.DependencyList,
+  nextDeps: React.DependencyList,
+  compare?: CompareFunction<P>,
+): boolean {
+  const prevProps = prevDeps[0] as P;
+  const nextProps = nextDeps[0] as P;
+  if (compare) return compare(prevProps, nextProps);
+
+  return shallowEquals(prevProps, nextProps);
 }
