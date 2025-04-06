@@ -1,4 +1,9 @@
+import { useState } from "react";
+
+/** ref의 lazy initialization 사용 */
 export function useRef<T>(initialValue: T): { current: T } {
-  // React의 useState를 이용해서 만들어보세요.
-  return { current: initialValue };
+  const [ref] = useState(() => ({ current: initialValue }));
+  return ref;
 }
+
+// TODO: useState없이 구현해보기
