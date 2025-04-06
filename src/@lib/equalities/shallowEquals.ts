@@ -1,3 +1,5 @@
+import { isObject } from "../utils";
+
 export function shallowEquals<T>(a: T, b: T): boolean {
   if (a === b) return true;
 
@@ -18,10 +20,6 @@ function arrayShallowEquals<T>(arrA: T[], arrB: T[]): boolean {
     if (arrA[i] !== arrB[i]) return false;
   }
   return true;
-}
-
-function isObject(item: unknown): item is Record<string, unknown> {
-  return typeof item === "object" && item !== null && !Array.isArray(item);
 }
 
 function objectShallowEquals(
