@@ -5,7 +5,7 @@ import { useRef } from "./useRef";
 export function useMemo<T>(
   factory: () => T,
   _deps: DependencyList,
-  _equals = shallowEquals
+  _equals = shallowEquals,
 ): T {
   // dependency 저장.
   const prevDeps = useRef<DependencyList | null>(null);
