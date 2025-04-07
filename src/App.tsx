@@ -1,345 +1,70 @@
-import React, { useState, createContext, useContext } from "react";
-import { generateItems, renderLog } from "./utils";
+import React, { useCallback, useState } from "react";
+import { generateItems } from "./utils";
+import { Header } from "./components/Header.tsx";
+import { ItemList } from "./components/ItemList.tsx";
+import { ComplexForm } from "./components/ComplexForm.tsx";
+import { NotificationSystem } from "./components/NotificationSystem.tsx";
+import { ThemeProvider, useThemeContext } from "./store/ThemeContext.tsx";
+import { UserProvider } from "./store/UserContext.tsx";
+import { NotificationProvider } from "./store/NotificationContext.tsx";
 
-// 타입 정의
-interface Item {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-}
+/**
+ * InnerApp 컴포넌트를 분리한 이유: Context 설정하는 부분과 UI 렌더링 부분을 분리하고 싶었음..
+ * 기능자체는 문제가 없어보이지만 유지보수에 있어서는 책임과 역할이 다르기 때문에 분리하는 것으로 결정
+ *
+ */
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
+const InnerApp: React.FC = () => {
+  const { theme } = useThemeContext();
+  // useState 초기 state 다시 생성하지 않기.. useState에 함수를 호출하지말고 함수 자체 전달
+  // -> 그러면 React는 초기화 중에만 함수를 호출
+  const [items, setItems] = useState(() => generateItems(1000));
+  // const [items, setItems] = useState(generateItems(1000));
 
-interface Notification {
-  id: number;
-  message: string;
-  type: "info" | "success" | "warning" | "error";
-}
-
-// AppContext 타입 정의
-interface AppContextType {
-  theme: string;
-  toggleTheme: () => void;
-  user: User | null;
-  login: (email: string, password: string) => void;
-  logout: () => void;
-  notifications: Notification[];
-  addNotification: (message: string, type: Notification["type"]) => void;
-  removeNotification: (id: number) => void;
-}
-
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-// 커스텀 훅: useAppContext
-const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error("useAppContext must be used within an AppProvider");
-  }
-  return context;
-};
-
-// Header 컴포넌트
-export const Header: React.FC = () => {
-  renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
-
-  const handleLogin = () => {
-    // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
-    login("user@example.com", "password");
-  };
-
-  return (
-    <header className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold">샘플 애플리케이션</h1>
-        <div className="flex items-center">
-          <button
-            onClick={toggleTheme}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-          >
-            {theme === "light" ? "다크 모드" : "라이트 모드"}
-          </button>
-          {user ? (
-            <div className="flex items-center">
-              <span className="mr-2">{user.name}님 환영합니다!</span>
-              <button
-                onClick={logout}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              >
-                로그아웃
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={handleLogin}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            >
-              로그인
-            </button>
-          )}
-        </div>
-      </div>
-    </header>
-  );
-};
-
-// ItemList 컴포넌트
-export const ItemList: React.FC<{
-  items: Item[];
-  onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
-  renderLog("ItemList rendered");
-  const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
-
-  const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase()),
-  );
-
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
-
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
-
-  return (
-    <div className="mt-8">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">상품 목록</h2>
-        <div>
-          <button
-            type="button"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
-          >
-            대량추가
-          </button>
-        </div>
-      </div>
-      <input
-        type="text"
-        placeholder="상품 검색..."
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        className="w-full p-2 mb-4 border border-gray-300 rounded text-black"
-      />
-      <ul className="mb-4 mx-4 flex gap-3 text-sm justify-end">
-        <li>검색결과: {filteredItems.length.toLocaleString()}개</li>
-        <li>전체가격: {totalPrice.toLocaleString()}원</li>
-        <li>평균가격: {averagePrice.toLocaleString()}원</li>
-      </ul>
-      <ul className="space-y-2">
-        {filteredItems.map((item, index) => (
-          <li
-            key={index}
-            className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
-          >
-            {item.name} - {item.category} - {item.price.toLocaleString()}원
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-// ComplexForm 컴포넌트
-export const ComplexForm: React.FC = () => {
-  renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    age: 0,
-    preferences: [] as string[],
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addNotification("폼이 성공적으로 제출되었습니다", "success");
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "age" ? parseInt(value) || 0 : value,
-    }));
-  };
-
-  const handlePreferenceChange = (preference: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      preferences: prev.preferences.includes(preference)
-        ? prev.preferences.filter((p) => p !== preference)
-        : [...prev.preferences, preference],
-    }));
-  };
-
-  return (
-    <div className="mt-8">
-      <h2 className="text-2xl font-bold mb-4">복잡한 폼</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          placeholder="이름"
-          className="w-full p-2 border border-gray-300 rounded text-black"
-        />
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          placeholder="이메일"
-          className="w-full p-2 border border-gray-300 rounded text-black"
-        />
-        <input
-          type="number"
-          name="age"
-          value={formData.age}
-          onChange={handleInputChange}
-          placeholder="나이"
-          className="w-full p-2 border border-gray-300 rounded text-black"
-        />
-        <div className="space-x-4">
-          {["독서", "운동", "음악", "여행"].map((pref) => (
-            <label key={pref} className="inline-flex items-center">
-              <input
-                type="checkbox"
-                checked={formData.preferences.includes(pref)}
-                onChange={() => handlePreferenceChange(pref)}
-                className="form-checkbox h-5 w-5 text-blue-600"
-              />
-              <span className="ml-2">{pref}</span>
-            </label>
-          ))}
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          제출
-        </button>
-      </form>
-    </div>
-  );
-};
-
-// NotificationSystem 컴포넌트
-export const NotificationSystem: React.FC = () => {
-  renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAppContext();
-
-  return (
-    <div className="fixed bottom-4 right-4 space-y-2">
-      {notifications.map((notification) => (
-        <div
-          key={notification.id}
-          className={`p-4 rounded shadow-lg ${
-            notification.type === "success"
-              ? "bg-green-500"
-              : notification.type === "error"
-                ? "bg-red-500"
-                : notification.type === "warning"
-                  ? "bg-yellow-500"
-                  : "bg-blue-500"
-          } text-white`}
-        >
-          {notification.message}
-          <button
-            onClick={() => removeNotification(notification.id)}
-            className="ml-4 text-white hover:text-gray-200"
-          >
-            닫기
-          </button>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-// 메인 App 컴포넌트
-const App: React.FC = () => {
-  const [theme, setTheme] = useState("light");
-  const [items, setItems] = useState(generateItems(1000));
-  const [user, setUser] = useState<User | null>(null);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
-
-  const addItems = () => {
+  // InnerApp이 렌더링되면 안에있는 ItemList도 필요없이 렌더링되는걸 막기위해
+  // 의존성배열을 빈배열로.. 처음 렌더링시 한번만 정의되면됨
+  const addItems = useCallback(() => {
     setItems((prevItems) => [
       ...prevItems,
       ...generateItems(1000, prevItems.length),
     ]);
-  };
-
-  const login = (email: string) => {
-    setUser({ id: 1, name: "홍길동", email });
-    addNotification("성공적으로 로그인되었습니다", "success");
-  };
-
-  const logout = () => {
-    setUser(null);
-    addNotification("로그아웃되었습니다", "info");
-  };
-
-  const addNotification = (message: string, type: Notification["type"]) => {
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      type,
-    };
-    setNotifications((prev) => [...prev, newNotification]);
-  };
-
-  const removeNotification = (id: number) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id),
-    );
-  };
-
-  const contextValue: AppContextType = {
-    theme,
-    toggleTheme,
-    user,
-    login,
-    logout,
-    notifications,
-    addNotification,
-    removeNotification,
-  };
+  }, []);
 
   return (
-    <AppContext.Provider value={contextValue}>
-      <div
-        className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-      >
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2 md:pr-4">
-              <ItemList items={items} onAddItemsClick={addItems} />
-            </div>
-            <div className="w-full md:w-1/2 md:pl-4">
-              <ComplexForm />
-            </div>
+    <div
+      className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
+    >
+      <Header />
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/2 md:pr-4">
+            <ItemList items={items} onAddItemsClick={addItems} />
+          </div>
+          <div className="w-full md:w-1/2 md:pl-4">
+            <ComplexForm />
           </div>
         </div>
-        <NotificationSystem />
       </div>
-    </AppContext.Provider>
+      <NotificationSystem />
+    </div>
   );
 };
+
+// Context를 분리하려고 하니 Provider를 중첩된 구조로 짜게됨...
+// 이 중첩 구조의 순서가 맞는것인지.... 일단 각 Provider에서 다른 Provider의 context를 사용하지
+// 않아.. 순서는 상관없는것 같다..
+// 아 Header.tsx에서 loginClick 함수안에  addNotification를  분리하려고한다.. 재렌더링때문에
+// 그러면 UserProvider 안에 login에서 addNotification를 실행시켜야하는데..
+// 빌드시.. UserProvider가 NotificationProvider 보다 먼저 렌더링되어서 UserProvider 안에서 useNotificationContext()를 호출할 수 없다는 에러발생..
+// 따라서  UserProvider가 와 NotificationProvider 순서 변경..
+const App: React.FC = () => (
+  <ThemeProvider>
+    <NotificationProvider>
+      <UserProvider>
+        <InnerApp />
+      </UserProvider>
+    </NotificationProvider>
+  </ThemeProvider>
+);
 
 export default App;
