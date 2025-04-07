@@ -1,4 +1,4 @@
-import { useAppContext } from "../@lib/hooks/useAppContext";
+import { useAppContext } from "../@lib/hooks/useContext";
 import { renderLog } from "../utils";
 
 export const NotificationSystem: React.FC = () => {

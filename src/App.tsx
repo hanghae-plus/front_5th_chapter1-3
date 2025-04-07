@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { generateItems } from "./utils";
-import { User, Notification, AppContextType } from "./types";
-import { AppContext } from "./@lib/hooks/useAppContext";
+import { User, Notification, AppContextType, ThemeContextType } from "./types";
+import { AppContext, ThemeContext } from "./@lib/hooks/useContext";
 import { ComplexForm } from "./components/ComplexForm";
 import { Header } from "./components/Header";
 import { ItemList } from "./components/ItemList";
@@ -51,8 +51,6 @@ const App: React.FC = () => {
   };
 
   const contextValue: AppContextType = {
-    theme,
-    toggleTheme,
     user,
     login,
     logout,
@@ -61,24 +59,31 @@ const App: React.FC = () => {
     removeNotification,
   };
 
+  const themeContextValue: ThemeContextType = {
+    theme,
+    toggleTheme,
+  };
+
   return (
     <AppContext.Provider value={contextValue}>
-      <div
-        className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-      >
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2 md:pr-4">
-              <ItemList items={items} onAddItemsClick={addItems} />
-            </div>
-            <div className="w-full md:w-1/2 md:pl-4">
-              <ComplexForm />
+      <ThemeContext.Provider value={themeContextValue}>
+        <div
+          className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
+        >
+          <Header />
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col md:flex-row">
+              <div className="w-full md:w-1/2 md:pr-4">
+                <ItemList items={items} onAddItemsClick={addItems} />
+              </div>
+              <div className="w-full md:w-1/2 md:pl-4">
+                <ComplexForm />
+              </div>
             </div>
           </div>
+          <NotificationSystem />
         </div>
-        <NotificationSystem />
-      </div>
+      </ThemeContext.Provider>
     </AppContext.Provider>
   );
 };
