@@ -26,13 +26,16 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
     return false;
   }
 
-  const entriesA: [string, unknown][] = Object.entries(objA);
-  const entriesB: [string, unknown][] = Object.entries(objB);
+  const keysA = Object.keys(objA);
+  const keysB = Object.keys(objB);
 
-  return (
-    entriesA.length === entriesB.length &&
-    entriesA.every(([key, value]: [string, unknown]) => {
-      return objB[key] === value;
-    })
-  );
+  if (
+    keysA.length !== keysB.length ||
+    keysA.some((key: string) => !keysB.includes(key))
+
+  ) {
+    return false;
+  }
+
+  return keysA.every((key: string) => objA[key] === objB[key])
 }
