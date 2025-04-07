@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
+import React, { ComponentType } from "react";
 import { shallowEquals } from "../equalities";
-import { ComponentType } from "react";
 import { useRef } from "../hooks";
 
 export function memo<P extends object>(
@@ -15,13 +13,15 @@ export function memo<P extends object>(
 
   const MemoizedComponent = function (props: P) {
     const ref = useRef({
-      props: {},
+      props,
+      element: React.createElement(Component, props),
     });
 
-    if (!shallowEquals(props, ref.current.props)) {
+    if (!_equals(props, ref.current.props)) {
       ref.current.props = props;
-      return React.createElement(Component, props);
+      ref.current.element = React.createElement(Component, props);
     }
+    return ref.current.element;
   };
 
   return MemoizedComponent;
