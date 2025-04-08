@@ -1,9 +1,10 @@
-import { useAppContext } from "../@lib/hooks/useContext";
+import { memo } from "../@lib";
+import { useNotification } from "../@lib/hooks/useContext";
 import { renderLog } from "../utils";
 
-export const NotificationSystem: React.FC = () => {
+export const NotificationSystem: React.FC = memo(() => {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAppContext();
+  const { notifications, removeNotification } = useNotification();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">
@@ -31,4 +32,4 @@ export const NotificationSystem: React.FC = () => {
       ))}
     </div>
   );
-};
+});

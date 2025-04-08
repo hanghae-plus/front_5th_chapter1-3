@@ -13,18 +13,17 @@ export const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const { addNotification } = useNotification();
 
-  const login = useCallback(
-    (email: string) => {
-      setUser({ id: 1, name: "홍길동", email });
-    },
-    [addNotification],
-  );
+  const login = useCallback((email: string) => {
+    setUser({ id: 1, name: "홍길동", email });
+    addNotification("로그인 되었습니다.", "success");
+  }, []);
 
   const logout = useCallback(() => {
     setUser(null);
-  }, [addNotification]);
+    addNotification("로그아웃 되었습니다.", "success");
+  }, []);
 
-  const authContext = useMemo(
+  const value = useMemo(
     () => ({
       user,
       login,
@@ -33,21 +32,19 @@ export const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
     [user, login, logout],
   );
 
-  return (
-    <AppContext.Provider value={authContext}>{children}</AppContext.Provider>
-  );
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
+  }, []);
+
+  const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 };
 
@@ -65,14 +62,17 @@ export const NotificationProvider: React.FC<PropsWithChildren> = ({
       };
       setNotifications((prev) => [...prev, newNotification]);
     },
-    [],
+    [setNotifications],
   );
 
-  const removeNotification = useCallback((id: number) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id),
-    );
-  }, []);
+  const removeNotification = useCallback(
+    (id: number) => {
+      setNotifications((prev) =>
+        prev.filter((notification) => notification.id !== id),
+      );
+    },
+    [setNotifications],
+  );
 
   const value = useMemo(
     () => ({

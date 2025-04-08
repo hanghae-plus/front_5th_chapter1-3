@@ -1,15 +1,16 @@
-import { useAppContext, useThemeContext } from "../@lib/hooks/useContext";
+import { memo, useCallback } from "../@lib";
+import { useAuth, useTheme } from "../@lib/hooks/useContext";
 import { renderLog } from "../utils";
 
-export const Header: React.FC = () => {
+export const Header: React.FC = memo(() => {
   renderLog("Header rendered");
-  const { theme, toggleTheme } = useThemeContext();
-  const { user, login, logout } = useAppContext();
+  const { theme, toggleTheme } = useTheme();
+  const { user, login, logout } = useAuth();
 
-  const handleLogin = () => {
+  const handleLogin = useCallback(() => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
     login("user@example.com", "password");
-  };
+  }, []);
 
   return (
     <header className="bg-gray-800 text-white p-4">
@@ -44,4 +45,4 @@ export const Header: React.FC = () => {
       </div>
     </header>
   );
-};
+});

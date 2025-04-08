@@ -1,17 +1,33 @@
 import { useState } from "react";
 
-import { Item } from "../types";
-import { renderLog } from "../utils";
-import { useThemeContext } from "../@lib/hooks/useContext";
 import { memo } from "../@lib";
+import { useTheme } from "../@lib/hooks/useContext";
+import { Item as ItemProps } from "../types";
+import { renderLog } from "../utils";
+interface ItemListEntryProps {
+  item: ItemProps;
+  theme: string;
+}
+
+const ItemListEntry = memo(
+  ({ item, theme }: Omit<ItemListEntryProps, "key">) => {
+    return (
+      <li
+        className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
+      >
+        {item.name} - {item.category} - {item.price.toLocaleString()}원
+      </li>
+    );
+  },
+);
 
 export const ItemList: React.FC<{
-  items: Item[];
+  items: ItemProps[];
   onAddItemsClick: () => void;
 }> = memo(({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
-  const { theme } = useThemeContext();
+  const { theme } = useTheme();
 
   const filteredItems = items.filter(
     (item) =>
@@ -51,12 +67,7 @@ export const ItemList: React.FC<{
       </ul>
       <ul className="space-y-2">
         {filteredItems.map((item, index) => (
-          <li
-            key={index}
-            className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
-          >
-            {item.name} - {item.category} - {item.price.toLocaleString()}원
-          </li>
+          <ItemListEntry key={index} item={item} theme={theme} />
         ))}
       </ul>
     </div>
