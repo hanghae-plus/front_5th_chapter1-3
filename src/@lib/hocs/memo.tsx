@@ -4,7 +4,7 @@ import { useRef } from "../hooks/useRef";
 
 export function memo<P extends object>(
   Component: ComponentType<P>,
-  _equals = shallowEquals
+  _equals = shallowEquals,
 ) {
   return (props: P) => {
     const prevProps = useRef<P | null>(null);
