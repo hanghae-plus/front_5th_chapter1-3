@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   deepEquals,
   deepMemo,
@@ -9,31 +9,31 @@ import {
   useDeepMemo,
   useMemo,
   useRef,
-} from "../@lib";
-import { act, fireEvent, render } from "@testing-library/react";
+} from '../@lib';
+import { act, fireEvent, render } from '@testing-library/react';
 import React, {
   ComponentProps,
   forwardRef,
   useImperativeHandle,
   useState,
-} from "react";
+} from 'react';
 
-describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
-  describe("비교 함수 구현하기 > ", () => {
-    describe("shallowEquals 함수", () => {
-      it("기본 타입 값들을 정확히 비교해야 한다", () => {
+describe('Chapter 1-3 기본과제: hooks 구현하기 > ', () => {
+  describe('비교 함수 구현하기 > ', () => {
+    describe('shallowEquals 함수', () => {
+      it('기본 타입 값들을 정확히 비교해야 한다', () => {
         expect(shallowEquals(1, 1)).toBe(true);
-        expect(shallowEquals("안녕", "안녕")).toBe(true);
+        expect(shallowEquals('안녕', '안녕')).toBe(true);
         expect(shallowEquals(true, true)).toBe(true);
         expect(shallowEquals(null, null)).toBe(true);
         expect(shallowEquals(undefined, undefined)).toBe(true);
         expect(shallowEquals(1, 2)).toBe(false);
-        expect(shallowEquals("안녕", "잘가")).toBe(false);
+        expect(shallowEquals('안녕', '잘가')).toBe(false);
         expect(shallowEquals(true, false)).toBe(false);
         expect(shallowEquals(null, undefined)).toBe(false);
       });
 
-      it("배열을 얕게 비교해야 한다", () => {
+      it('배열을 얕게 비교해야 한다', () => {
         expect(shallowEquals([1, 2, 3], [1, 2, 3])).toBe(true);
         expect(shallowEquals([1, 2, 3], [1, 2, 4])).toBe(false);
         const arr1 = [1, {}];
@@ -41,7 +41,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         expect(shallowEquals(arr1, arr2)).toBe(false); // 다른 객체 참조
       });
 
-      it("객체를 얕게 비교해야 한다", () => {
+      it('객체를 얕게 비교해야 한다', () => {
         expect(shallowEquals({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(true);
         expect(shallowEquals({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(true);
         expect(shallowEquals({ a: 1, b: 2 }, { a: 1, b: 3 })).toBe(false);
@@ -50,34 +50,34 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         expect(shallowEquals(obj1, obj2)).toBe(false); // 다른 객체 참조
       });
 
-      it("중첩된 구조를 깊게 비교하지 않아야 한다", () => {
+      it('중첩된 구조를 깊게 비교하지 않아야 한다', () => {
         const obj1 = { a: 1, b: { c: 2 } };
         const obj2 = { a: 1, b: { c: 2 } };
         expect(shallowEquals(obj1, obj2)).toBe(false); // 중첩된 객체의 참조가 다름
       });
     });
 
-    describe("deepEquals 함수", () => {
-      it("기본 타입 값들을 정확히 비교해야 한다", () => {
+    describe('deepEquals 함수', () => {
+      it('기본 타입 값들을 정확히 비교해야 한다', () => {
         expect(deepEquals(1, 1)).toBe(true);
-        expect(deepEquals("안녕", "안녕")).toBe(true);
+        expect(deepEquals('안녕', '안녕')).toBe(true);
         expect(deepEquals(true, true)).toBe(true);
         expect(deepEquals(null, null)).toBe(true);
         expect(deepEquals(undefined, undefined)).toBe(true);
         expect(deepEquals(1, 2)).toBe(false);
-        expect(deepEquals("안녕", "잘가")).toBe(false);
+        expect(deepEquals('안녕', '잘가')).toBe(false);
         expect(deepEquals(true, false)).toBe(false);
         expect(deepEquals(null, undefined)).toBe(false);
       });
 
-      it("배열을 정확히 비교해야 한다", () => {
+      it('배열을 정확히 비교해야 한다', () => {
         expect(deepEquals([1, 2, 3], [1, 2, 3])).toBe(true);
         expect(deepEquals([1, 2, 3], [1, 2, 4])).toBe(false);
         expect(deepEquals([1, [2, 3]], [1, [2, 3]])).toBe(true);
         expect(deepEquals([1, [2, 3]], [1, [2, 4]])).toBe(false);
       });
 
-      it("객체를 정확히 비교해야 한다", () => {
+      it('객체를 정확히 비교해야 한다', () => {
         expect(deepEquals({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(true);
         expect(deepEquals({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(true);
         expect(deepEquals({ a: 1, b: 2 }, { a: 1, b: 3 })).toBe(false);
@@ -85,7 +85,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         expect(deepEquals({ a: { b: 2 } }, { a: { b: 3 } })).toBe(false);
       });
 
-      it("중첩된 구조를 정확히 비교해야 한다", () => {
+      it('중첩된 구조를 정확히 비교해야 한다', () => {
         const obj1 = { a: 1, b: { c: 2, d: [3, 4, { e: 5 }] } };
         const obj2 = { a: 1, b: { c: 2, d: [3, 4, { e: 5 }] } };
         const obj3 = { a: 1, b: { c: 2, d: [3, 4, { e: 6 }] } };
@@ -97,18 +97,18 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
 
   describe.each([
     // 직접 구현한 hook들
-    { spec: "직접 구현한 hooks", useRef, useCallback, useMemo },
+    { spec: '직접 구현한 hooks', useRef, useCallback, useMemo },
 
     // React에서 만들어진 훅들
     {
-      spec: "React에서 제공하는 hooks",
+      spec: 'React에서 제공하는 hooks',
       useRef: React.useRef,
       useCallback: React.useCallback,
       useMemo: React.useMemo,
     },
-  ])("$spec > ", ({ useRef, useCallback, useMemo }) => {
-    describe("useRef 훅", () => {
-      it("리렌더링이 되어도 useRef의 참조값이 유지된다. ", () => {
+  ])('$spec > ', ({ useRef, useCallback, useMemo }) => {
+    describe('useRef 훅', () => {
+      it('리렌더링이 되어도 useRef의 참조값이 유지된다. ', () => {
         const refs = new Set();
 
         const UseMyRefTest = ({ label }: { label: string }) => {
@@ -128,18 +128,18 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
           <>
             <UseMyRefTest label="rerender1" />
             <UseMyRefTest label="rerender2" />
-          </>,
+          </>
         );
 
         act(() => {
-          fireEvent.click(getByText("rerender1"));
-          fireEvent.click(getByText("rerender2"));
+          fireEvent.click(getByText('rerender1'));
+          fireEvent.click(getByText('rerender2'));
         });
 
         expect(refs.size).toBe(2);
       });
 
-      it("렌더링 간에 ref 값을 유지하고, 값 변경 시 리렌더링을 트리거하지 않아야 한다", () => {
+      it('렌더링 간에 ref 값을 유지하고, 값 변경 시 리렌더링을 트리거하지 않아야 한다', () => {
         let renderCount = 0;
 
         function TestComponent() {
@@ -174,26 +174,26 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         const { getByText, getByTestId } = render(<TestComponent />);
 
         // 초기 상태 확인
-        expect(getByTestId("render-count").textContent).toBe("Render Count: 1");
-        expect(getByTestId("ref-value").textContent).toBe("Ref Value: 0");
+        expect(getByTestId('render-count').textContent).toBe('Render Count: 1');
+        expect(getByTestId('ref-value').textContent).toBe('Ref Value: 0');
 
         // ref 값 변경
-        fireEvent.click(getByText("Increment Ref"));
+        fireEvent.click(getByText('Increment Ref'));
 
         // ref 값이 변경되었지만 리렌더링은 발생하지 않음
-        expect(getByTestId("render-count").textContent).toBe("Render Count: 1");
-        expect(getByTestId("ref-value").textContent).toBe("Ref Value: 0");
+        expect(getByTestId('render-count').textContent).toBe('Render Count: 1');
+        expect(getByTestId('ref-value').textContent).toBe('Ref Value: 0');
 
         // 강제 리렌더링
-        fireEvent.click(getByText("Force Update"));
+        fireEvent.click(getByText('Force Update'));
 
         // 리렌더링 발생, 변경된 ref 값 반영
-        expect(getByTestId("render-count").textContent).toBe("Render Count: 2");
-        expect(getByTestId("ref-value").textContent).toBe("Ref Value: 1");
+        expect(getByTestId('render-count').textContent).toBe('Render Count: 2');
+        expect(getByTestId('ref-value').textContent).toBe('Ref Value: 1');
       });
     });
 
-    describe("useMemo 훅", () => {
+    describe('useMemo 훅', () => {
       const mockFactory = vi.fn();
 
       const TestComponent = forwardRef<
@@ -224,8 +224,8 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         mockFactory.mockClear();
       });
 
-      it("useMemo 메모이제이션 테스트: 의존성의 값들이 변경될 때 재계산", () => {
-        const ref: ComponentProps<typeof TestComponent>["ref"] = {
+      it('useMemo 메모이제이션 테스트: 의존성의 값들이 변경될 때 재계산', () => {
+        const ref: ComponentProps<typeof TestComponent>['ref'] = {
           current: null,
         };
 
@@ -300,7 +300,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
       });
     });
 
-    describe("useCallback 훅", () => {
+    describe('useCallback 훅', () => {
       const mockCallback = vi.fn((x: number) => x * 2);
 
       const TestComponent = forwardRef<
@@ -335,8 +335,8 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         mockCallback.mockClear();
       });
 
-      it("useCallback 메모이제이션 테스트: 의존성의 값들이 변경될 때 재생성", () => {
-        const ref: ComponentProps<typeof TestComponent>["ref"] = {
+      it('useCallback 메모이제이션 테스트: 의존성의 값들이 변경될 때 재생성', () => {
+        const ref: ComponentProps<typeof TestComponent>['ref'] = {
           current: null,
         };
 
@@ -414,8 +414,8 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         expect(ref.current?.getMemoizedCallback()).not.toBe(arrayCallback);
       });
 
-      it("메모이제이션된 콜백 함수가 올바르게 동작하는지 확인", () => {
-        const ref: ComponentProps<typeof TestComponent>["ref"] = {
+      it('메모이제이션된 콜백 함수가 올바르게 동작하는지 확인', () => {
+        const ref: ComponentProps<typeof TestComponent>['ref'] = {
           current: null,
         };
 
@@ -432,8 +432,8 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
     });
   });
 
-  describe("custom hook 만들어보기", () => {
-    describe("useMemo의 deps 비교 함수를 주입받아서 사용할 수 있다.", () => {
+  describe('custom hook 만들어보기', () => {
+    describe('useMemo의 deps 비교 함수를 주입받아서 사용할 수 있다.', () => {
       const mockFactory = vi.fn();
 
       const TestComponent = forwardRef<
@@ -465,8 +465,8 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         mockFactory.mockClear();
       });
 
-      it("useMemo의 deps 비교 함수를 주입받아서 사용할 수 있다.", () => {
-        const ref: ComponentProps<typeof TestComponent>["ref"] = {
+      it('useMemo의 deps 비교 함수를 주입받아서 사용할 수 있다.', () => {
+        const ref: ComponentProps<typeof TestComponent>['ref'] = {
           current: null,
         };
 
@@ -501,7 +501,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
       });
     });
 
-    describe("useDeepMemo 훅", () => {
+    describe('useDeepMemo 훅', () => {
       const mockFactory = vi.fn();
 
       const TestComponent = forwardRef<
@@ -532,8 +532,8 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         mockFactory.mockClear();
       });
 
-      it("useDeepMemo를 사용할 경우, dependencies의 값에 대해 깊은비교를 하여 메모이제이션 한다.", () => {
-        const ref: ComponentProps<typeof TestComponent>["ref"] = {
+      it('useDeepMemo를 사용할 경우, dependencies의 값에 대해 깊은비교를 하여 메모이제이션 한다.', () => {
+        const ref: ComponentProps<typeof TestComponent>['ref'] = {
           current: null,
         };
 
@@ -574,7 +574,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
     });
   });
 
-  describe("hoc 만들어보기", () => {
+  describe('hoc 만들어보기', () => {
     // 테스트용 컴포넌트
     const TestComponent = vi.fn(({ value, ...props }) => {
       return (
@@ -589,10 +589,10 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
     });
 
     describe.each([
-      { spec: "직접 만든 memo", memo },
-      { spec: "React에서 제공하는 memo", memo: React.memo as typeof memo },
-    ])("$spec", ({ memo }) => {
-      it("props로 전달하는 값이 변경되어야 리렌더링 된다.", () => {
+      { spec: '직접 만든 memo', memo },
+      { spec: 'React에서 제공하는 memo', memo: React.memo as typeof memo },
+    ])('$spec', ({ memo }) => {
+      it('props로 전달하는 값이 변경되어야 리렌더링 된다.', () => {
         const MemoizedComponent = memo(TestComponent);
         const { rerender } = render(<MemoizedComponent value={1} />);
 
@@ -607,13 +607,13 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         rerender(<MemoizedComponent value={2} />);
         expect(TestComponent).toHaveBeenCalledTimes(2);
 
-        rerender(<MemoizedComponent value={2} style={{ color: "#09F" }} />);
+        rerender(<MemoizedComponent value={2} style={{ color: '#09F' }} />);
         expect(TestComponent).toHaveBeenCalledTimes(3);
 
-        rerender(<MemoizedComponent value={2} style={{ color: "#09F" }} />);
+        rerender(<MemoizedComponent value={2} style={{ color: '#09F' }} />);
         expect(TestComponent).toHaveBeenCalledTimes(4);
 
-        const DEFAULT_STYLE = { color: "#09F" };
+        const DEFAULT_STYLE = { color: '#09F' };
         rerender(<MemoizedComponent value={2} style={DEFAULT_STYLE} />);
         expect(TestComponent).toHaveBeenCalledTimes(5);
 
@@ -622,8 +622,8 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
       });
     });
 
-    describe("deepMemo HOC", () => {
-      it("props로 전달하는 값이 모두 변경되어야 리렌더링 된다.", () => {
+    describe('deepMemo HOC', () => {
+      it('props로 전달하는 값이 모두 변경되어야 리렌더링 된다.', () => {
         const DeepMemoizedComponent = deepMemo(TestComponent);
         const { rerender } = render(<DeepMemoizedComponent value={1} />);
 
@@ -638,21 +638,21 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         rerender(<DeepMemoizedComponent value={2} />);
         expect(TestComponent).toHaveBeenCalledTimes(2);
 
-        const DEFAULT_STYLE = { color: "#09F" };
+        const DEFAULT_STYLE = { color: '#09F' };
         rerender(<DeepMemoizedComponent value={2} style={DEFAULT_STYLE} />);
         expect(TestComponent).toHaveBeenCalledTimes(3);
 
-        rerender(<DeepMemoizedComponent value={2} style={{ color: "#09F" }} />);
+        rerender(<DeepMemoizedComponent value={2} style={{ color: '#09F' }} />);
         expect(TestComponent).toHaveBeenCalledTimes(3);
 
-        rerender(<DeepMemoizedComponent style={{ color: "#09F" }} value={2} />);
+        rerender(<DeepMemoizedComponent style={{ color: '#09F' }} value={2} />);
         expect(TestComponent).toHaveBeenCalledTimes(3);
       });
 
-      it("깊은 객체 비교를 수행해야 한다", () => {
+      it('깊은 객체 비교를 수행해야 한다', () => {
         const DeepMemoizedComponent = deepMemo(TestComponent);
         const { rerender } = render(
-          <DeepMemoizedComponent value={{ a: { b: 1 } }} />,
+          <DeepMemoizedComponent value={{ a: { b: 1 } }} />
         );
 
         expect(TestComponent).toHaveBeenCalledTimes(1);
@@ -664,10 +664,10 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         expect(TestComponent).toHaveBeenCalledTimes(2); // 값이 변경되어 리렌더링
       });
 
-      it("깊은 배열 비교를 수행해야 한다", () => {
+      it('깊은 배열 비교를 수행해야 한다', () => {
         const DeepMemoizedComponent = deepMemo(TestComponent);
         const { rerender } = render(
-          <DeepMemoizedComponent value={[1, [2, 3]]} />,
+          <DeepMemoizedComponent value={[1, [2, 3]]} />
         );
 
         expect(TestComponent).toHaveBeenCalledTimes(1);
