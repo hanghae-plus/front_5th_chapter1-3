@@ -1,9 +1,14 @@
-import { useAppContext } from "../context/useContext";
+import React from "react";
+
+import { AppContext } from "../context/AppContext";
+import { ThemeContext } from "../context/ThemeContext";
+import { useContextValue } from "../context/useContextValue";
 import { renderLog } from "../utils";
 
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
+  const { user, login, logout } = useContextValue(AppContext);
+  const { theme, toggleTheme } = useContextValue(ThemeContext);
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
@@ -34,8 +39,8 @@ export const Header: React.FC = () => {
           ) : (
             <button
               onClick={handleLogin}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            >
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              >
               로그인
             </button>
           )}

@@ -1,11 +1,12 @@
-import React from "react";
+import React from 'react';
 
-import { useAppContext } from "../context/useContext";
+import { AppContext } from "../context/AppContext";
+import { useContextValue } from "../context/useContextValue";
 import { renderLog } from "../utils";
 
 export const NotificationSystem: React.FC = () => {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAppContext();
+  const { notifications, removeNotification } = useContextValue(AppContext);
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">
@@ -20,7 +21,7 @@ export const NotificationSystem: React.FC = () => {
                 : notification.type === "warning"
                   ? "bg-yellow-500"
                   : "bg-blue-500"
-          } text-white`}
+            } text-white`}
         >
           {notification.message}
           <button
