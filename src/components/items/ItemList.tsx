@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { renderLog } from "../../utils";
 import { useAppContext } from "../../hooks/useAppContext";
+import { generateItems } from "../../utils";
 
 interface Item {
   id: number;
@@ -10,13 +11,20 @@ interface Item {
   price: number;
 }
 
-export const ItemList: React.FC<{
-  items: Item[];
-  onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+export const ItemList: React.FC = () => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
+
+  const [items, setItems] = useState<Item[]>(generateItems(1000));
+
   const { theme } = useAppContext();
+
+  const addItems = () => {
+    setItems((prevItems) => [
+      ...prevItems,
+      ...generateItems(1000, prevItems.length),
+    ]);
+  };
 
   const filteredItems = items.filter(
     (item) =>
@@ -36,7 +44,7 @@ export const ItemList: React.FC<{
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={addItems}
           >
             대량추가
           </button>

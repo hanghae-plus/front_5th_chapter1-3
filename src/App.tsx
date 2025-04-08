@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { generateItems } from "./utils";
 import { Header } from "./components/common/Header";
 import { ItemList } from "./components/items/ItemList";
 import { ComplexForm } from "./components/form/ComplexForm";
@@ -12,19 +11,11 @@ import { Notification } from "./hooks/useAppContext";
 // 메인 App 컴포넌트
 const App: React.FC = () => {
   const [theme, setTheme] = useState("light");
-  const [items, setItems] = useState(generateItems(1000));
   const [user, setUser] = useState<User | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
-
-  const addItems = () => {
-    setItems((prevItems) => [
-      ...prevItems,
-      ...generateItems(1000, prevItems.length),
-    ]);
   };
 
   const login = (email: string) => {
@@ -72,7 +63,7 @@ const App: React.FC = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row">
             <div className="w-full md:w-1/2 md:pr-4">
-              <ItemList items={items} onAddItemsClick={addItems} />
+              <ItemList />
             </div>
             <div className="w-full md:w-1/2 md:pl-4">
               <ComplexForm />
