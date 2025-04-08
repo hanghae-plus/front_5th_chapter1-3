@@ -1,20 +1,17 @@
 import { useState } from "react";
-import { useAppContext } from "../@lib/contexts/appContext";
+import { useTheme } from "../app/model";
 import { renderLog } from "../utils";
-import { Item } from "../@lib/types";
-// ItemList 컴포넌트
-export function ItemList({
-  items,
-  onAddItemsClick,
-}: {
-  items: Item[];
-  onAddItemsClick: () => void;
-}) {
-  renderLog("ItemList rendered");
-  const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
+import { useProducts } from "../features/product/model/ProductProvider";
 
-  const filteredItems = items.filter(
+export function ProductList() {
+  renderLog("ProductList rendered");
+
+  const [filter, setFilter] = useState("");
+
+  const { theme } = useTheme();
+  const { products, addProducts } = useProducts();
+
+  const filteredItems = products.filter(
     (item) =>
       item.name.toLowerCase().includes(filter.toLowerCase()) ||
       item.category.toLowerCase().includes(filter.toLowerCase()),
@@ -32,7 +29,7 @@ export function ItemList({
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={addProducts}
           >
             대량추가
           </button>

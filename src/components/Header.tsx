@@ -1,15 +1,13 @@
-import { useAppContext } from "../@lib/contexts/appContext";
+import { useTheme } from "../app/model";
+import { useAuth } from "../features/auth/model/AuthProvider";
 import { renderLog } from "../utils";
+import { AuthActions } from "./AuthActions";
 
 // Header 컴포넌트
 export function Header() {
   renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
-
-  const handleLogin = () => {
-    // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
-    login("user@example.com", "password");
-  };
+  const { theme, toggleTheme } = useTheme();
+  const { user, login, logout } = useAuth();
 
   return (
     <header className="bg-gray-800 text-white p-4">
@@ -22,24 +20,7 @@ export function Header() {
           >
             {theme === "light" ? "다크 모드" : "라이트 모드"}
           </button>
-          {user ? (
-            <div className="flex items-center">
-              <span className="mr-2">{user.name}님 환영합니다!</span>
-              <button
-                onClick={logout}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              >
-                로그아웃
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={handleLogin}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            >
-              로그인
-            </button>
-          )}
+          <AuthActions user={user} onLogin={login} onLogout={logout} />
         </div>
       </div>
     </header>

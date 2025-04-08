@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { renderLog } from "../utils";
-import { useAppContext } from "../@lib/contexts/appContext";
+import { useNotification } from "../features/notification/model/NotificationProvider";
 
 // ComplexForm 컴포넌트
-export function ComplexForm() {
+export const ComplexForm = memo(() => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
+  const { addNotification } = useNotification();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -85,4 +85,4 @@ export function ComplexForm() {
       </form>
     </div>
   );
-}
+});

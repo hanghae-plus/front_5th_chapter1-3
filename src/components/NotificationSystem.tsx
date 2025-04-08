@@ -1,10 +1,10 @@
-import { useAppContext } from "../@lib/contexts/appContext";
+import { useNotification } from "../features/notification/model/NotificationProvider";
 import { renderLog } from "../utils";
 
 // NotificationSystem 컴포넌트
 export function NotificationSystem() {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAppContext();
+  const { notifications, removeNotification } = useNotification();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">

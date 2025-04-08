@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import App from "../App";
 import * as utils from "../utils";
+import { App } from "../app/app";
 
 const renderLogMock = vi.spyOn(utils, "renderLog");
 const generateItemsSpy = vi.spyOn(utils, "generateItems");
@@ -16,13 +16,13 @@ describe("최적화된 App 컴포넌트 테스트", () => {
   it("초기 렌더링 시 모든 컴포넌트가 한 번씩 렌더링되어야 한다", () => {
     render(<App />);
     expect(renderLogMock).toHaveBeenCalledWith("Header rendered");
-    expect(renderLogMock).toHaveBeenCalledWith("ItemList rendered");
+    expect(renderLogMock).toHaveBeenCalledWith("ProductList rendered");
     expect(renderLogMock).toHaveBeenCalledWith("ComplexForm rendered");
     expect(renderLogMock).toHaveBeenCalledWith("NotificationSystem rendered");
     expect(renderLogMock).toHaveBeenCalledTimes(4);
   });
 
-  it("테마 변경 시 Header, ItemList만 리렌더링되어야 한다", async () => {
+  it("테마 변경 시 Header, ProductList만 리렌더링되어야 한다", async () => {
     render(<App />);
     renderLogMock.mockClear();
 
@@ -30,7 +30,7 @@ describe("최적화된 App 컴포넌트 테스트", () => {
     await fireEvent.click(themeButton);
 
     expect(renderLogMock).toHaveBeenCalledWith("Header rendered");
-    expect(renderLogMock).toHaveBeenCalledWith("ItemList rendered");
+    expect(renderLogMock).toHaveBeenCalledWith("ProductList rendered");
     expect(renderLogMock).toHaveBeenCalledTimes(2);
   });
 
@@ -57,14 +57,14 @@ describe("최적화된 App 컴포넌트 테스트", () => {
     expect(renderLogMock).toHaveBeenCalledTimes(3);
   });
 
-  it("아이템 검색 시 ItemList만 리렌더링되어야 한다", async () => {
+  it("아이템 검색 시 ProductList만 리렌더링되어야 한다", async () => {
     render(<App />);
     renderLogMock.mockClear();
 
     const searchInput = await screen.findByPlaceholderText("상품 검색...");
     await fireEvent.change(searchInput, { target: { value: "검색어" } });
 
-    expect(renderLogMock).toHaveBeenCalledWith("ItemList rendered");
+    expect(renderLogMock).toHaveBeenCalledWith("ProductList rendered");
     expect(renderLogMock).toHaveBeenCalledTimes(1);
   });
 
@@ -108,7 +108,7 @@ describe("최적화된 App 컴포넌트 테스트", () => {
     const themeButton = await screen.findByText(/다크 모드|라이트 모드/);
     await fireEvent.click(themeButton);
     expect(renderLogMock).toHaveBeenCalledWith("Header rendered");
-    expect(renderLogMock).toHaveBeenCalledWith("ItemList rendered");
+    expect(renderLogMock).toHaveBeenCalledWith("ProductList rendered");
     expect(renderLogMock).toHaveBeenCalledTimes(2);
     renderLogMock.mockClear();
 
@@ -131,7 +131,7 @@ describe("최적화된 App 컴포넌트 테스트", () => {
     // 아이템 검색
     const searchInput = await screen.findByPlaceholderText("상품 검색...");
     await userEvent.type(searchInput, "검색어입력");
-    expect(renderLogMock).toHaveBeenCalledWith("ItemList rendered");
+    expect(renderLogMock).toHaveBeenCalledWith("ProductList rendered");
     expect(renderLogMock).toHaveBeenCalledTimes(5);
     renderLogMock.mockClear();
 
