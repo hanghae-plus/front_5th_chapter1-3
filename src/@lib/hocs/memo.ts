@@ -1,7 +1,7 @@
+import React, { ComponentType } from "react";
+
 import { shallowEquals } from "../equalities";
-import { ComponentType } from "react";
 import { useRef } from "../hooks";
-import React from "react";
 
 export function memo<P extends object>(
   Component: ComponentType<P>,

@@ -1,7 +1,9 @@
 import React from "react";
-import { ComplexForm, NotificationSystem } from "../../components";
-import { ProductProvider } from "../../features/product/model/ProductProvider";
-import { ProductList } from "../../components/ProductList";
+
+import { ProductProvider } from "@features/product/model/ProductProvider";
+
+import { ComplexForm, NotificationSystem } from "@/components";
+import { ProductList } from "@/components/ProductList";
 
 const MainPage: React.FC = () => {
   return (

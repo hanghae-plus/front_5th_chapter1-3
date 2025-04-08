@@ -1,5 +1,6 @@
-import { useNotification } from "../features/notification/model/NotificationProvider";
-import { renderLog } from "../utils";
+import { useNotification } from "@features/notification/model/NotificationProvider";
+
+import { renderLog } from "@/utils";
 
 // NotificationSystem 컴포넌트
 export function NotificationSystem() {

@@ -1,18 +1,11 @@
-import { NotificationProvider } from "../features/notification";
-import { MainPage } from "../pages";
-import { Layout } from "./layout/Layout";
-import { ThemeProvider } from "./model/ThemeProvider";
+import { MainPage } from "@/pages";
 
-const App: React.FC = () => {
-  return (
-    <ThemeProvider>
-      <NotificationProvider>
-        <Layout>
-          <MainPage />
-        </Layout>
-      </NotificationProvider>
-    </ThemeProvider>
-  );
-};
+import { Layout } from "./layout/Layout";
+
+const App: React.FC = () => (
+  <Layout>
+    <MainPage />
+  </Layout>
+);
 
 export { App };

@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { useTheme } from "../app/model";
-import { renderLog } from "../utils";
-import { useProducts } from "../features/product/model/ProductProvider";
+
+import { useTheme } from "@app/model";
+import { useProducts } from "@features/product/model/ProductProvider";
+
+import { renderLog } from "@/utils";
 
 export function ProductList() {
   renderLog("ProductList rendered");

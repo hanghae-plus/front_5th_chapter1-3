@@ -1,8 +1,9 @@
 import { memo, useState } from "react";
-import { renderLog } from "../utils";
-import { useNotification } from "../features/notification/model/NotificationProvider";
 
-// ComplexForm 컴포넌트
+import { useNotification } from "@features/notification/model/NotificationProvider";
+
+import { renderLog } from "@/utils";
+
 export const ComplexForm = memo(() => {
   renderLog("ComplexForm rendered");
   const { addNotification } = useNotification();

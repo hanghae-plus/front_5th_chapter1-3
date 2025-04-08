@@ -1,5 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { act, fireEvent, render } from "@testing-library/react";
+import React, {
+  ComponentProps,
+  forwardRef,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import {
   deepEquals,
   deepMemo,
@@ -10,13 +18,6 @@ import {
   useMemo,
   useRef,
 } from "../@lib";
-import { act, fireEvent, render } from "@testing-library/react";
-import React, {
-  ComponentProps,
-  forwardRef,
-  useImperativeHandle,
-  useState,
-} from "react";
 
 describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
   describe("비교 함수 구현하기 > ", () => {

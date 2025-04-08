@@ -1,6 +1,9 @@
 import { createContext, useContext, useState } from "react";
+
+import { generateItems } from "@/utils";
+
 import { Product } from "./types";
-import { generateItems } from "../../../utils";
+
 type ProductContextType = {
   products: Product[];
   addProducts: () => void;

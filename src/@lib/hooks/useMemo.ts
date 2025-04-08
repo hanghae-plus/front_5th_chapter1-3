@@ -1,4 +1,5 @@
 import { DependencyList } from "react";
+
 import { shallowEquals } from "../equalities";
 import { useRef } from "./useRef";
 

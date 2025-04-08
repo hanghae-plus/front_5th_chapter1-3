@@ -1,9 +1,9 @@
-import { useTheme } from "../app/model";
-import { useAuth } from "../features/auth/model/AuthProvider";
-import { renderLog } from "../utils";
-import { AuthActions } from "./AuthActions";
+import { useTheme } from "@app/model";
+import { useAuth } from "@features/auth/model/AuthProvider";
 
-// Header 컴포넌트
+import { AuthActions } from "@/components/AuthActions";
+import { renderLog } from "@/utils";
+
 export function Header() {
   renderLog("Header rendered");
   const { theme, toggleTheme } = useTheme();

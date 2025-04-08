@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import { DependencyList } from "react";
-import { useRef } from "./useRef";
+
 import { shallowEquals } from "../equalities";
+import { useRef } from "./useRef";
 
 export function useCallback<T extends Function>(
   factory: T,
