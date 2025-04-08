@@ -21,12 +21,15 @@ export interface AppContextType {
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
-  notifications: Notification[];
-  addNotification: (message: string, type: Notification["type"]) => void;
-  removeNotification: (id: number) => void;
 }
 
 export interface ThemeContextType {
   theme: string;
   toggleTheme: () => void;
+}
+
+export interface NotificationContextType {
+  notifications: Notification[];
+  addNotification: (message: string, type: Notification["type"]) => void;
+  removeNotification: (id: number) => void;
 }
