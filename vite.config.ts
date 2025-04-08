@@ -5,6 +5,8 @@ import { defineConfig as defineTestConfig, mergeConfig } from "vitest/config";
 
 export default mergeConfig(
   defineConfig({
+    base:
+      process.env.NODE_ENV === "production" ? "/front-5th-chapter1-3/" : "/",
     plugins: [react()],
     resolve: {
       alias: {
