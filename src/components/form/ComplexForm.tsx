@@ -3,6 +3,7 @@ import { useState } from "react";
 import { renderLog } from "../../utils";
 import { memo } from "../../@lib/hocs/memo";
 import { useNotificationContext } from "../../hooks";
+import { useRef } from "../../@lib";
 const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
   const { addNotification } = useNotificationContext();
@@ -36,6 +37,8 @@ const ComplexForm: React.FC = () => {
     }));
   };
 
+  const emailRef = useRef<HTMLInputElement | null>(null);
+
   return (
     <div className="mt-8">
       <h2 className="text-2xl font-bold mb-4">복잡한 폼</h2>
@@ -51,6 +54,7 @@ const ComplexForm: React.FC = () => {
         <input
           type="email"
           name="email"
+          ref={emailRef}
           value={formData.email}
           onChange={handleInputChange}
           placeholder="이메일"

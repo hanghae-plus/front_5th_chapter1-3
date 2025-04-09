@@ -6,7 +6,7 @@ import NotificationSystem from "./components/notification/NotificationSystem";
 import { NotificationProvider } from "./context/NotificationContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
-// 타입 정의
+import UncontrolledForm from "./components/form/UncontrolledForm";
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
@@ -22,6 +22,7 @@ const App: React.FC = () => {
               </div>
               <div className="w-full md:w-1/2 md:pl-4">
                 <ComplexForm />
+                <UncontrolledForm />
               </div>
             </div>
           </div>
