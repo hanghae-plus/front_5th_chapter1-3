@@ -1,6 +1,10 @@
 import { createContext, useContext, useState } from "react";
 
-import { Notification } from "./types";
+export type Notification = {
+  id: number;
+  message: string;
+  type: "info" | "success" | "warning" | "error";
+};
 
 type NotificationContextType = {
   notifications: Notification[];

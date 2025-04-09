@@ -2,7 +2,12 @@ import { createContext, useContext, useState } from "react";
 
 import { generateItems } from "@/utils";
 
-import { Product } from "./types";
+export type Product = {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+};
 
 type ProductContextType = {
   products: Product[];

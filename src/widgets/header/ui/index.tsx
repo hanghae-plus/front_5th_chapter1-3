@@ -1,11 +1,12 @@
 import { useTheme } from "@app/model";
+import { AuthActions } from "@widgets/auth-actions";
 import { useAuth } from "@features/auth/model/AuthProvider";
 
-import { AuthActions } from "@/components/AuthActions";
 import { renderLog } from "@/utils";
 
 export function Header() {
   renderLog("Header rendered");
+
   const { theme, toggleTheme } = useTheme();
   const { user, login, logout } = useAuth();
 

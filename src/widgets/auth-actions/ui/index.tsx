@@ -1,6 +1,5 @@
-import { User } from "@features/auth/model/types";
-
-import { useNotification } from "../features/notification/model/NotificationProvider";
+import { User } from "@features/auth/model";
+import { useNotification } from "@features/notification/model";
 
 interface AuthActionsProps {
   user: User | null;
