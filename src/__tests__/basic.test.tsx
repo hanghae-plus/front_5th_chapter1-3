@@ -17,7 +17,7 @@ import {
   useDeepMemo,
   useMemo,
   useRef,
-} from "../@lib";
+} from "../shared";
 
 describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
   describe("비교 함수 구현하기 > ", () => {

@@ -2,11 +2,13 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { App } from "@/app/App";
-import * as utils from "@/utils";
+import * as generateItems from "@shared/tests/generateItems";
+import * as renderLog from "@shared/tests/renderLog";
 
-const renderLogMock = vi.spyOn(utils, "renderLog");
-const generateItemsSpy = vi.spyOn(utils, "generateItems");
+import { App } from "@/app/App";
+
+const renderLogMock = vi.spyOn(renderLog, "renderLog");
+const generateItemsSpy = vi.spyOn(generateItems, "generateItems");
 
 describe("최적화된 App 컴포넌트 테스트", () => {
   beforeEach(() => {

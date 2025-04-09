@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 
-import { generateItems } from "@/utils";
+import { generateItems } from "@shared/tests";
 
 export type Product = {
   id: number;
