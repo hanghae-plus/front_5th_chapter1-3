@@ -1,5 +1,14 @@
-import React, { useState, createContext, useContext } from "react";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  useMemo,
+  memo,
+  useCallback,
+} from "react";
 import { generateItems, renderLog } from "./utils";
+
+type Theme = "light" | "dark";
 
 // 타입 정의
 interface Item {
@@ -13,6 +22,7 @@ interface User {
   id: number;
   name: string;
   email: string;
+  password: number;
 }
 
 interface Notification {
@@ -21,33 +31,77 @@ interface Notification {
   type: "info" | "success" | "warning" | "error";
 }
 
-// AppContext 타입 정의
-interface AppContextType {
-  theme: string;
+//Context 정의
+//테마
+interface ThemeContextType {
+  theme: Theme;
   toggleTheme: () => void;
+}
+
+//회원 기능
+interface UserContextType {
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
+}
+
+//noti
+interface NotificationContextType {
   notifications: Notification[];
   addNotification: (message: string, type: Notification["type"]) => void;
   removeNotification: (id: number) => void;
 }
 
-const AppContext = createContext<AppContextType | undefined>(undefined);
+//ItemList
 
-// 커스텀 훅: useAppContext
-const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error("useAppContext must be used within an AppProvider");
-  }
+interface ItemListProps {
+  theme: "light" | "dark";
+  items: Item[];
+  onAddItemsClick: () => void;
+  filter: string;
+  setFilter: (value: string) => void;
+}
+
+const ThemeContext = createContext<ThemeContextType | null>(null);
+const UserContext = createContext<UserContextType | null>(null);
+const NotificationContext = createContext<NotificationContextType | null>(null);
+
+//테마 바꾸기
+const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context)
+    throw new Error("useTheme must be used within an ThemeProvider");
   return context;
 };
 
+//로그인 로그아웃
+const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) throw new Error("useUser must be used within an UserProvider");
+  return context;
+};
+
+const useNotification = () => {
+  const context = useContext(NotificationContext);
+  if (!context)
+    throw new Error("useNotification must be used within an UserProvider");
+  return context;
+};
+
+// // 커스텀 훅: useAppContext
+// const useAppContext = () => {
+//   const context = useContext(AppContext);
+//   if (context === undefined) {
+//     throw new Error("useAppContext must be used within an AppProvider");
+//   }
+//   return context;
+// };
+
 // Header 컴포넌트
-export const Header: React.FC = () => {
+export const Header: React.FC = memo(() => {
   renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
+  const { theme, toggleTheme } = useTheme();
+  const { user, login, logout } = useUser();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
@@ -87,71 +141,70 @@ export const Header: React.FC = () => {
       </div>
     </header>
   );
-};
+});
 
 // ItemList 컴포넌트
-export const ItemList: React.FC<{
-  items: Item[];
-  onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
-  renderLog("ItemList rendered");
-  const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
+export const ItemList: React.FC<ItemListProps> = memo(
+  ({ theme, items, onAddItemsClick, filter, setFilter }) => {
+    renderLog("ItemList rendered");
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase()),
-  );
+    const filteredItems = useMemo(() => {
+      return items.filter(
+        (item) =>
+          item.name.toLowerCase().includes(filter.toLowerCase()) ||
+          item.category.toLowerCase().includes(filter.toLowerCase()),
+      );
+    }, [items, filter]);
 
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
+    const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
 
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
+    const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
 
-  return (
-    <div className="mt-8">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">상품 목록</h2>
-        <div>
-          <button
-            type="button"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
-          >
-            대량추가
-          </button>
+    return (
+      <div className="mt-8">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">상품 목록</h2>
+          <div>
+            <button
+              type="button"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
+              onClick={onAddItemsClick}
+            >
+              대량추가
+            </button>
+          </div>
         </div>
+        <input
+          type="text"
+          placeholder="상품 검색..."
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          className="w-full p-2 mb-4 border border-gray-300 rounded text-black"
+        />
+        <ul className="mb-4 mx-4 flex gap-3 text-sm justify-end">
+          <li>검색결과: {filteredItems.length.toLocaleString()}개</li>
+          <li>전체가격: {totalPrice.toLocaleString()}원</li>
+          <li>평균가격: {averagePrice.toLocaleString()}원</li>
+        </ul>
+        <ul className="space-y-2">
+          {filteredItems.map((item, index) => (
+            <li
+              key={index}
+              className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
+            >
+              {item.name} - {item.category} - {item.price.toLocaleString()}원
+            </li>
+          ))}
+        </ul>
       </div>
-      <input
-        type="text"
-        placeholder="상품 검색..."
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        className="w-full p-2 mb-4 border border-gray-300 rounded text-black"
-      />
-      <ul className="mb-4 mx-4 flex gap-3 text-sm justify-end">
-        <li>검색결과: {filteredItems.length.toLocaleString()}개</li>
-        <li>전체가격: {totalPrice.toLocaleString()}원</li>
-        <li>평균가격: {averagePrice.toLocaleString()}원</li>
-      </ul>
-      <ul className="space-y-2">
-        {filteredItems.map((item, index) => (
-          <li
-            key={index}
-            className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
-          >
-            {item.name} - {item.category} - {item.price.toLocaleString()}원
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+    );
+  },
+);
 
 // ComplexForm 컴포넌트
-export const ComplexForm: React.FC = () => {
+export const ComplexForm: React.FC = memo(() => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
+  const { addNotification } = useNotification();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -231,12 +284,12 @@ export const ComplexForm: React.FC = () => {
       </form>
     </div>
   );
-};
+});
 
 // NotificationSystem 컴포넌트
-export const NotificationSystem: React.FC = () => {
+export const NotificationSystem: React.FC = memo(() => {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAppContext();
+  const { notifications, removeNotification } = useNotification();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">
@@ -264,81 +317,107 @@ export const NotificationSystem: React.FC = () => {
       ))}
     </div>
   );
-};
+});
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
-  const [theme, setTheme] = useState("light");
-  const [items, setItems] = useState(generateItems(1000));
+  const [theme, setTheme] = useState<Theme>("light");
+  const [items, setItems] = useState(() => generateItems(1000)); //여기?
   const [user, setUser] = useState<User | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [filter, setFilter] = useState("");
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
+  }, []);
 
-  const addItems = () => {
+  const addItems = useCallback(() => {
     setItems((prevItems) => [
       ...prevItems,
       ...generateItems(1000, prevItems.length),
     ]);
-  };
+  }, []);
 
-  const login = (email: string) => {
-    setUser({ id: 1, name: "홍길동", email });
-    addNotification("성공적으로 로그인되었습니다", "success");
-  };
+  const addNotification = useCallback(
+    (message: string, type: Notification["type"]) => {
+      const newNotification: Notification = {
+        id: Date.now(),
+        message,
+        type,
+      };
+      setNotifications((prev) => [...prev, newNotification]);
+    },
+    [],
+  );
 
-  const logout = () => {
+  const login = useCallback(
+    (email: string) => {
+      setUser({ id: 1, name: "홍길동", email, password: 1234 }); // 임시로 맞춰주기기
+      addNotification("성공적으로 로그인되었습니다", "success");
+    },
+    [addNotification],
+  );
+
+  const logout = useCallback(() => {
     setUser(null);
     addNotification("로그아웃되었습니다", "info");
-  };
+  }, [addNotification]);
 
-  const addNotification = (message: string, type: Notification["type"]) => {
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      type,
-    };
-    setNotifications((prev) => [...prev, newNotification]);
-  };
-
-  const removeNotification = (id: number) => {
+  const removeNotification = useCallback((id: number) => {
     setNotifications((prev) =>
       prev.filter((notification) => notification.id !== id),
     );
-  };
+  }, []);
 
-  const contextValue: AppContextType = {
-    theme,
-    toggleTheme,
-    user,
-    login,
-    logout,
-    notifications,
-    addNotification,
-    removeNotification,
-  };
+  // const contextValue: AppContextType = {
+  //   theme,
+  //   toggleTheme,
+  //   user,
+  //   login,
+  //   logout,
+  //   notifications,
+  //   addNotification,
+  //   removeNotification,
+  // };
+
+  const themeValue = useMemo(() => ({ theme, toggleTheme }), [theme]);
+  const userValue = useMemo(() => ({ user, login, logout }), [user]);
+  const notificationValue = useMemo(
+    () => ({ notifications, addNotification, removeNotification }),
+    [notifications, addNotification, removeNotification],
+  );
 
   return (
-    <AppContext.Provider value={contextValue}>
-      <div
-        className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-      >
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2 md:pr-4">
-              <ItemList items={items} onAddItemsClick={addItems} />
+    <ThemeContext.Provider value={themeValue}>
+      <UserContext.Provider value={userValue}>
+        <NotificationContext.Provider value={notificationValue}>
+          {/* <AppContext.Provider value={contextValue}> */}
+          <div
+            className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
+          >
+            <Header />
+            <div className="container mx-auto px-4 py-8">
+              <div className="flex flex-col md:flex-row">
+                <div className="w-full md:w-1/2 md:pr-4">
+                  <ItemList
+                    theme={theme}
+                    items={items}
+                    onAddItemsClick={addItems}
+                    filter={filter}
+                    setFilter={setFilter}
+                  />
+                </div>
+                <div className="w-full md:w-1/2 md:pl-4">
+                  <ComplexForm />
+                </div>
+              </div>
             </div>
-            <div className="w-full md:w-1/2 md:pl-4">
-              <ComplexForm />
-            </div>
+            <NotificationSystem />
           </div>
-        </div>
-        <NotificationSystem />
-      </div>
-    </AppContext.Provider>
+          {/* </AppContext.Provider> */}
+        </NotificationContext.Provider>
+      </UserContext.Provider>
+    </ThemeContext.Provider>
   );
 };
 
