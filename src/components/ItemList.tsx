@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 import { memo } from "../@lib";
-import { useTheme } from "../@lib/hooks/useContext";
+
+import { useTheme } from "../@lib/context/theme";
 import { Item as ItemProps } from "../types";
 import { renderLog } from "../utils";
 interface ItemListEntryProps {

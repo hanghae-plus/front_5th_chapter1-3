@@ -17,7 +17,7 @@ export interface Notification {
   type: "info" | "success" | "warning" | "error";
 }
 
-export interface AppContextType {
+export interface UserContextType {
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
