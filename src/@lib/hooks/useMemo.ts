@@ -19,7 +19,7 @@ export function useMemo<T>(
     initialize: false,
   });
 
-  if (!ref.current || !_equals(ref.current.deps, _deps)) {
+  if (!ref.current.initialize || !_equals(ref.current.deps, _deps)) {
     ref.current.value = factory();
     ref.current.deps = _deps;
     ref.current.initialize = true;
