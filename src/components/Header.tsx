@@ -1,13 +1,13 @@
 import React from "react";
 
-import { AppContext } from "../context/AppContext";
+import { UserContext } from "../context/UserContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { useContextValue } from "../context/useContextValue";
 import { renderLog } from "../utils";
 
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { user, login, logout } = useContextValue(AppContext);
+  const { user, login, logout } = useContextValue(UserContext);
   const { theme, toggleTheme } = useContextValue(ThemeContext);
 
   const handleLogin = () => {
@@ -39,8 +39,8 @@ export const Header: React.FC = () => {
           ) : (
             <button
               onClick={handleLogin}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              >
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            >
               로그인
             </button>
           )}
