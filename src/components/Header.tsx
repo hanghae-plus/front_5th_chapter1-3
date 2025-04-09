@@ -1,13 +1,19 @@
 import { renderLog } from "../utils";
-import { useAppContext } from "../contexts";
-import { memo } from "../@lib/hocs";
+import { useTheme } from "../contexts/ThemeContext";
+import { useUser } from "../contexts/UserContext";
 
-export const Header: React.FC = memo(() => {
+/**
+ * Header 컴포넌트 리렌더링 조건
+ * 1. theme가 바뀔 때
+ * 2. user, login, logout 중 하나라도 바뀔 때(useNotification에 의존하고 있음)
+ */
+export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
+
+  const { theme, toggleTheme } = useTheme();
+  const { user, login, logout } = useUser();
 
   const handleLogin = () => {
-    // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
     login("user@example.com", "password");
   };
 
@@ -44,4 +50,4 @@ export const Header: React.FC = memo(() => {
       </div>
     </header>
   );
-});
+};
