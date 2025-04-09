@@ -2,11 +2,12 @@ import type { Item } from "../types";
 import { useState } from "react";
 import { renderLog } from "../utils";
 import { useAppContext } from "../contexts";
+import { memo } from "../@lib/hocs";
 
 export const ItemList: React.FC<{
   items: Item[];
   onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+}> = memo(({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
   const { theme } = useAppContext();
@@ -59,4 +60,4 @@ export const ItemList: React.FC<{
       </ul>
     </div>
   );
-};
+});

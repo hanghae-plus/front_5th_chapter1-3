@@ -1,7 +1,8 @@
 import { useAppContext } from "../contexts";
 import { renderLog } from "../utils";
+import { memo } from "../@lib/hocs";
 
-export const NotificationSystem: React.FC = () => {
+export const NotificationSystem: React.FC = memo(() => {
   renderLog("NotificationSystem rendered");
   const { notifications, removeNotification } = useAppContext();
 
@@ -31,4 +32,4 @@ export const NotificationSystem: React.FC = () => {
       ))}
     </div>
   );
-};
+});
