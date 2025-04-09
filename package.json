@@ -23,6 +23,7 @@
     "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
+    "class-variance-authority": "^0.7.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
