@@ -12,3 +12,14 @@ export const generateItems = (count: number, start = 0) => {
     price: Math.floor(Math.random() * 100000) + 1000,
   }));
 };
+
+export const isPrimitiveValue = <T>(value: T): boolean => {
+  return (
+    typeof value === "bigint" ||
+    typeof value === "boolean" ||
+    typeof value === "number" ||
+    typeof value === "string" ||
+    typeof value === "symbol" ||
+    typeof value === "undefined"
+  );
+};
