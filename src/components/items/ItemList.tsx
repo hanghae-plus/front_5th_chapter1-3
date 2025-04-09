@@ -1,35 +1,20 @@
 // ItemList 컴포넌트
 import { useState } from "react";
 import { renderLog } from "../../utils";
-import { useAppContext } from "../../hooks/useAppContext";
-import { generateItems } from "../../utils";
+import { memo } from "../../@lib/hocs/memo";
+import useItems from "../../hooks/useItems";
+import { useThemeContext } from "../../hooks";
 
-interface Item {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-}
-
-export const ItemList: React.FC = () => {
+const ItemList: React.FC = () => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
-
-  const [items, setItems] = useState<Item[]>(generateItems(1000));
-
-  const { theme } = useAppContext();
-
-  const addItems = () => {
-    setItems((prevItems) => [
-      ...prevItems,
-      ...generateItems(1000, prevItems.length),
-    ]);
-  };
+  const { items, addItems } = useItems();
+  const { theme } = useThemeContext();
 
   const filteredItems = items.filter(
     (item) =>
       item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase())
+      item.category.toLowerCase().includes(filter.toLowerCase()),
   );
 
   const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
@@ -75,3 +60,5 @@ export const ItemList: React.FC = () => {
     </div>
   );
 };
+
+export default memo(ItemList);

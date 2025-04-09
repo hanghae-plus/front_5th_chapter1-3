@@ -1,11 +1,11 @@
 // ComplexForm 컴포넌트
 import { useState } from "react";
 import { renderLog } from "../../utils";
-import { useAppContext } from "../../hooks/useAppContext";
-
-export const ComplexForm: React.FC = () => {
+import { memo } from "../../@lib/hocs/memo";
+import { useNotificationContext } from "../../hooks";
+const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
+  const { addNotification } = useNotificationContext();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,6 +20,7 @@ export const ComplexForm: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormData((prev) => ({
       ...prev,
       [name]: name === "age" ? parseInt(value) || 0 : value,
@@ -86,3 +87,5 @@ export const ComplexForm: React.FC = () => {
     </div>
   );
 };
+
+export default memo(ComplexForm);

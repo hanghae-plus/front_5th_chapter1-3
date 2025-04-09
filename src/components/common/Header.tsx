@@ -1,13 +1,15 @@
 // Header 컴포넌트
 import { renderLog } from "../../utils";
-import { useAppContext } from "../../hooks/useAppContext";
-export const Header: React.FC = () => {
+import { memo } from "../../@lib/hocs/memo";
+import { useAuthContext, useThemeContext } from "../../hooks";
+const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
+  const { user, login, logout } = useAuthContext();
+  const { theme, toggleTheme } = useThemeContext();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
-    login("user@example.com", "password");
+    login("user@example.com");
   };
 
   return (
@@ -44,3 +46,5 @@ export const Header: React.FC = () => {
     </header>
   );
 };
+
+export default memo(Header);
