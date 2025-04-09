@@ -12,7 +12,6 @@ export function memo<P extends object>(
     const factory = () => React.createElement(Component, props);
     return useMemo(factory, [props], (prevDeps, nextDeps) => {
       return compareDeps<P>(prevDeps, nextDeps, compare);
-      // TODO: 타입수정하기!
     });
   };
 }
