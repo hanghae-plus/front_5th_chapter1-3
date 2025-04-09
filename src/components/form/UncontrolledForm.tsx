@@ -36,7 +36,7 @@ const UncontrolledForm: React.FC = () => {
 
     addNotification(
       `${name}, ${email}, ${age}, ${checkedPreferences}`,
-      "success"
+      "success",
     );
   };
 
