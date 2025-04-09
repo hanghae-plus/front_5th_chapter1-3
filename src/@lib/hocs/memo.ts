@@ -1,10 +1,26 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ComponentType, createElement } from "react";
+
 import { shallowEquals } from "../equalities";
-import { ComponentType } from "react";
 
 export function memo<P extends object>(
   Component: ComponentType<P>,
   _equals = shallowEquals,
 ) {
-  return Component;
+  let memoized: [React.ReactElement, P] | [undefined, undefined] = [
+    undefined,
+    undefined,
+  ];
+
+  return (props: P) => {
+    const [prevElement, prevProps] = memoized;
+    if (prevProps && _equals(prevProps, props)) {
+      return prevElement;
+    }
+
+    const element = createElement(Component, props);
+
+    memoized = [element, props];
+
+    return element;
+  };
 }
