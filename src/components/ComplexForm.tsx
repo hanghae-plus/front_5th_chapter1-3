@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { renderLog } from "../utils";
-import { useAppContext } from "../contexts";
-import { memo } from "../@lib/hocs";
 
+import { memo } from "../@lib/hocs";
+import { useCallback } from "../@lib/hooks/useCallback";
+import { useNotification } from "../contexts/NotificationContext";
+
+/**
+ * memo는 상위 컨텍스트(props, context)가 변경되지 않는 한
+ * 하위 컴포넌트가 다시 렌더링되지 않도록 하는 고차 컴포넌트
+ * memo를 지우면, context가 변경될 때 하위 컴포넌트가 다시 렌더링됨(ex. ThemeContext)
+ * */
 export const ComplexForm: React.FC = memo(() => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
+  const { addNotification } = useNotification();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,10 +20,13 @@ export const ComplexForm: React.FC = memo(() => {
     preferences: [] as string[],
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addNotification("폼이 성공적으로 제출되었습니다", "success");
-  };
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      addNotification("폼이 성공적으로 제출되었습니다", "success");
+    },
+    [addNotification],
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
