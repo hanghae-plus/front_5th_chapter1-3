@@ -1,57 +1,48 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { useState } from "react";
 import { generateItems, renderLog } from "./utils";
+import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
+import { UserProvider, useUser } from "./contexts/UserContext";
+import {
+  NotificationProvider,
+  useNotification,
+} from "./contexts/NotificationContext";
 
 // 타입 정의
-interface Item {
+export interface Item {
   id: number;
   name: string;
   category: string;
   price: number;
 }
 
-interface User {
+export interface User {
   id: number;
   name: string;
   email: string;
 }
-
-interface Notification {
+export interface Notification {
   id: number;
   message: string;
   type: "info" | "success" | "warning" | "error";
 }
 
-// AppContext 타입 정의
-interface AppContextType {
-  theme: string;
-  toggleTheme: () => void;
-  user: User | null;
-  login: (email: string, password: string) => void;
-  logout: () => void;
-  notifications: Notification[];
-  addNotification: (message: string, type: Notification["type"]) => void;
-  removeNotification: (id: number) => void;
-}
-
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-// 커스텀 훅: useAppContext
-const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error("useAppContext must be used within an AppProvider");
-  }
-  return context;
-};
-
 // Header 컴포넌트
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
+
+  const { theme, toggleTheme } = useTheme();
+  const { user, login, logout } = useUser();
+  // const { addNotification } = useNotification();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
     login("user@example.com", "password");
+    // addNotification("로그인 성공", "success");
+  };
+
+  const handleLogout = () => {
+    logout();
+    // addNotification("로그아웃 성공", "success");
   };
 
   return (
@@ -69,7 +60,7 @@ export const Header: React.FC = () => {
             <div className="flex items-center">
               <span className="mr-2">{user.name}님 환영합니다!</span>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
               >
                 로그아웃
@@ -95,8 +86,9 @@ export const ItemList: React.FC<{
   onAddItemsClick: () => void;
 }> = ({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
+
   const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
+  const { theme } = useTheme();
 
   const filteredItems = items.filter(
     (item) =>
@@ -150,8 +142,11 @@ export const ItemList: React.FC<{
 
 // ComplexForm 컴포넌트
 export const ComplexForm: React.FC = () => {
+  const { addNotification } = useNotification();
+  const { user } = useUser();
+  console.log("user@@", user);
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -236,7 +231,8 @@ export const ComplexForm: React.FC = () => {
 // NotificationSystem 컴포넌트
 export const NotificationSystem: React.FC = () => {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAppContext();
+
+  const { removeNotification, notifications } = useNotification();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">
@@ -268,14 +264,8 @@ export const NotificationSystem: React.FC = () => {
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
-  const [theme, setTheme] = useState("light");
+  const [theme ] = useState("light");
   const [items, setItems] = useState(generateItems(1000));
-  const [user, setUser] = useState<User | null>(null);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
 
   const addItems = () => {
     setItems((prevItems) => [
@@ -284,61 +274,29 @@ const App: React.FC = () => {
     ]);
   };
 
-  const login = (email: string) => {
-    setUser({ id: 1, name: "홍길동", email });
-    addNotification("성공적으로 로그인되었습니다", "success");
-  };
-
-  const logout = () => {
-    setUser(null);
-    addNotification("로그아웃되었습니다", "info");
-  };
-
-  const addNotification = (message: string, type: Notification["type"]) => {
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      type,
-    };
-    setNotifications((prev) => [...prev, newNotification]);
-  };
-
-  const removeNotification = (id: number) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id),
-    );
-  };
-
-  const contextValue: AppContextType = {
-    theme,
-    toggleTheme,
-    user,
-    login,
-    logout,
-    notifications,
-    addNotification,
-    removeNotification,
-  };
-
   return (
-    <AppContext.Provider value={contextValue}>
-      <div
-        className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-      >
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2 md:pr-4">
-              <ItemList items={items} onAddItemsClick={addItems} />
+    <ThemeProvider>
+      <NotificationProvider>
+        <UserProvider>
+          <div
+            className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
+          >
+            <Header />
+            <div className="container mx-auto px-4 py-8">
+              <div className="flex flex-col md:flex-row">
+                <div className="w-full md:w-1/2 md:pr-4">
+                  <ItemList items={items} onAddItemsClick={addItems} />
+                </div>
+                <div className="w-full md:w-1/2 md:pl-4">
+                  <ComplexForm />
+                </div>
+              </div>
             </div>
-            <div className="w-full md:w-1/2 md:pl-4">
-              <ComplexForm />
-            </div>
+            <NotificationSystem />
           </div>
-        </div>
-        <NotificationSystem />
-      </div>
-    </AppContext.Provider>
+        </UserProvider>
+      </NotificationProvider>
+    </ThemeProvider>
   );
 };
 
