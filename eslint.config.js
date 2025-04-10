@@ -20,6 +20,12 @@ export default tseslint.config(
       "react-refresh": reactRefresh,
     },
     rules: {
+      "prettier/prettier": [
+        "error",
+        {
+          trailingComma: "es5",
+        },
+      ],
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [
         "warn",
@@ -27,6 +33,5 @@ export default tseslint.config(
       ],
     },
   },
-  eslintPluginPrettier,
-  eslintConfigPrettier,
+  eslintPluginPrettier
 );
