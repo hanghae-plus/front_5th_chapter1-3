@@ -1,6 +1,5 @@
 import { useTheme } from "@app/model";
 import { useProducts } from "@features/product/model/ProductProvider";
-
 import { renderLog } from "@shared/tests/renderLog";
 
 import { useProductList } from "../model";

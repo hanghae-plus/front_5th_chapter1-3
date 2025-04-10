@@ -1,7 +1,6 @@
 import { useTheme } from "@app/model";
 import { AuthActions } from "@widgets/auth-actions";
 import { useAuth } from "@features/auth/model/AuthProvider";
-
 import { renderLog } from "@shared/tests/renderLog";
 
 export function Header() {
