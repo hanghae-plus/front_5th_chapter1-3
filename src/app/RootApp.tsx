@@ -4,7 +4,7 @@ import { NotificationProvider } from "@features/notification/model";
 import { AppLayout } from "./layout";
 import { ThemeProvider } from "./model";
 
-const App: React.FC = () => (
+const RootApp: React.FC = () => (
   <ThemeProvider>
     <NotificationProvider>
       <AppLayout>
@@ -14,4 +14,4 @@ const App: React.FC = () => (
   </ThemeProvider>
 );
 
-export { App };
+export { RootApp };
