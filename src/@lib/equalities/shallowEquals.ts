@@ -1,3 +1,5 @@
+import { equals } from "./equals.ts";
+
 export function shallowEquals<T>(objA: T, objB: T): boolean {
-  return objA === objB;
+  return equals(objA, objB, (a, b) => a === b);
 }
