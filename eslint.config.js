@@ -23,8 +23,10 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [
         "warn",
-        { allowConstantExport: true },
+        { allowConstantExport: true, },
       ],
+      "no-prototype-builtins": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
   eslintPluginPrettier,

@@ -1,0 +1,41 @@
+hasOwnProperty?
+keyof?
+
+Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+
+  Object.keys()가 단순히 string[]을 반환하기 때문에, 타입스크립트에게 "이 문자열이 실제로 객체의 키임"을 알려줄 필요가 있기 때문
+
+  예시) interface Person {
+     name: string;
+     age: number;
+   }
+   
+   const person: Person = {
+     name: "John",
+     age: 30
+   };
+
+   const key = "name"; // 그냥 string 타입
+   person[key as keyof Person] // "name" | "age" 타입의 키로 접근
+
+   => 강제 타입 지정
+
+   unknown vs typeof으로 강제지정
+   - unknown은 확장성으로 볼 땐 컴파일 에러가 덜남
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+   오케이, 구조를 보니까 딱 예상한 대로야:
+
+NotificationContext.tsx
+useNotificationContext.ts
+
+이렇게 context와 hook이 서로 다른 파일에 나눠져 있으면 경로 충돌이나 다중 인스턴스 문제 생기기 딱 좋아요.
+
+✅ 지금 문제의 핵심 원인
+NotificationContext.tsx에서 context를 생성하고,
+useNotificationContext.ts에서 createContext()를 다시 한 번 호출했을 가능성이 높아요.
+
+이렇게 되면 Provider와 useContext()가 서로 다른 "세계"를 바라보기 때문에, NotificationContext.Provider는 useContext(NotificationContext)로는 절대 감지되지 않아요.
+
+👉 결과: NotificationContext must be used within a NotificationContextProvider 에러 발생
