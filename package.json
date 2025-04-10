@@ -1,5 +1,6 @@
 {
   "name": "front-5th-chapter1-3",
+  "homepage": "https://kk3june.github.io/front_5th_chapter1-3/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +10,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build:test": "vite build --mode development",
+    "build:prod": "vite build --mode production",
     "tsc": "tsc --noEmit",
     "lint:fix": "eslint --fix",
     "lint:report": "eslint -o eslint-report",
@@ -19,9 +21,12 @@
     "test:basic": "vitest basic",
     "test:advanced": "vitest advanced",
     "test:ui": "vitest --ui",
-    "prepare": "husky"
+    "prepare": "husky",
+    "predeploy": "pnpm run build:prod",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "gh-pages": "^6.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
