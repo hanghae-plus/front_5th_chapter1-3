@@ -1,10 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars,@typescript-eslint/no-unsafe-function-type */
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { DependencyList } from "react";
+import { useMemo } from "../hooks/useMemo";
 
 export function useCallback<T extends Function>(
   factory: T,
   _deps: DependencyList,
 ) {
-  // 직접 작성한 useMemo를 통해서 만들어보세요.
-  return factory as T;
+  return useMemo(() => factory, _deps);
 }
+
+// useCallback은 함수 자체를 저장한다.
+// dependency는 hook 안에서 사용하는 외부값, 해당 값이 바뀌면 hook을 다시 동작하게 만든다.
