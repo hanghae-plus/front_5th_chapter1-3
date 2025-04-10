@@ -195,7 +195,7 @@ export const ComplexForm: React.FC = memo(() => {
       e.preventDefault();
       addNotification("폼이 성공적으로 제출되었습니다", "success");
     },
-    [formData, addNotification],
+    [addNotification],
   );
 
   const handleInputChange = useCallback(
@@ -280,15 +280,14 @@ export const NotificationSystem: React.FC = memo(() => {
       {notifications.map((notification) => (
         <div
           key={notification.id}
-          className={`p-4 rounded shadow-lg ${
-            notification.type === "success"
-              ? "bg-green-500"
-              : notification.type === "error"
-                ? "bg-red-500"
-                : notification.type === "warning"
-                  ? "bg-yellow-500"
-                  : "bg-blue-500"
-          } text-white`}
+          className={`p-4 rounded shadow-lg ${notification.type === "success"
+            ? "bg-green-500"
+            : notification.type === "error"
+              ? "bg-red-500"
+              : notification.type === "warning"
+                ? "bg-yellow-500"
+                : "bg-blue-500"
+            } text-white`}
         >
           {notification.message}
           <button
@@ -326,11 +325,13 @@ const App: React.FC = () => {
   const login = useCallback((email: string) => {
     setUser({ id: 1, name: "홍길동", email });
     addNotification("성공적으로 로그인되었습니다", "success");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const logout = useCallback(() => {
     setUser(null);
     addNotification("로그아웃되었습니다", "info");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addNotification = useCallback(

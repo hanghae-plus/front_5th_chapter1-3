@@ -1,4 +1,4 @@
-export function deepEquals(objA: any, objB: any): boolean {
+export function deepEquals(objA: unknown, objB: unknown): boolean {
   // 1. 기본 타입이거나 null인 경우 처리
   if (Object.is(objA, objB)) {
     return true;
@@ -21,7 +21,7 @@ export function deepEquals(objA: any, objB: any): boolean {
   }
   if (isArrayA && isArrayB) {
     if (objA.length !== objB.length) return false;
-    return objA.every((item: any, index: number) =>
+    return objA.every((item: unknown, index: number) =>
       deepEquals(item, objB[index]),
     );
   }
