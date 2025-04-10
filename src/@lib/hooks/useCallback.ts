@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars,@typescript-eslint/no-unsafe-function-type */
 import { DependencyList } from "react";
+import { useMemo } from "./useMemo";
 
 export function useCallback<T extends Function>(
-  factory: T,
-  _deps: DependencyList,
-) {
-  // 직접 작성한 useMemo를 통해서 만들어보세요.
-  return factory as T;
+  callback: T,
+  deps: DependencyList,
+): T {
+  // useMemo를 사용하여 callback을 메모이제이션
+  // 의존성 배열이 변경되지 않으면 동일한 함수 참조를 유지
+  return useMemo(() => callback, deps);
 }

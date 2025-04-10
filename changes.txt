@@ -1,0 +1,642 @@
+diff --git a/.nvmrc b/.nvmrc
+index 2bd5a0a..8fdd954 100644
+--- a/.nvmrc
++++ b/.nvmrc
+@@ -1 +1 @@
+-22
++22
+\ No newline at end of file
+diff --git a/README.md b/README.md
+index 74872fd..2ce2770 100644
+--- a/README.md
++++ b/README.md
+@@ -1,50 +1,82 @@
+-# React + TypeScript + Vite
+-
+-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+-
+-Currently, two official plugins are available:
+-
+-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-
+-## Expanding the ESLint configuration
+-
+-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+-
+-- Configure the top-level `parserOptions` property like this:
+-
+-```js
+-export default tseslint.config({
+-  languageOptions: {
+-    // other options...
+-    parserOptions: {
+-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+-      tsconfigRootDir: import.meta.dirname,
+-    },
+-  },
+-})
+-```
+-
+-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+-- Optionally add `...tseslint.configs.stylisticTypeChecked`
+-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+-
+-```js
+-// eslint.config.js
+-import react from 'eslint-plugin-react'
+-
+-export default tseslint.config({
+-  // Set the react version
+-  settings: { react: { version: '18.3' } },
+-  plugins: {
+-    // Add the react plugin
+-    react,
+-  },
+-  rules: {
+-    // other rules...
+-    // Enable its recommended rules
+-    ...react.configs.recommended.rules,
+-    ...react.configs['jsx-runtime'].rules,
+-  },
+-})
+-```
++# 항해 3주차 회고 및 체크리스트
++
++## 과제 체크포인트
++
++### 배포 링크
++
++<!--
++배포 링크를 적어주세요
++예시: https://<username>.github.io/front-5th-chapter1-1/
++
++배포가 완료되지 않으면 과제를 통과할 수 없습니다.
++배포 후에 정상 작동하는지 확인해주세요.
++-->
++
++## 기본 과제
++
++- [ ] shallowEquals 구현 완료
++- [ ] deepEquals 구현 완료
++- [ ] memo 구현 완료
++- [ ] deepMemo 구현 완료
++- [ ] useRef 구현 완료
++- [ ] useMemo 구현 완료
++- [ ] useDeepMemo 구현 완료
++- [ ] useCallback 구현 완료
++
++## 심화 과제
++
++- [ ] 기본과제에서 작성한 hook을 이용하여 렌더링 최적화를 진행하였다.
++- [ ] Context 코드를 개선하여 렌더링을 최소화하였다.
++
++## 과제 회고
++
++### 과제 진행 시 어려웠던 점
++<!-- 예시
++- 새로 학습한 개념
++- 기존 지식의 재발견/심화
++- 구현 과정에서의 기술적 도전과 해결
++-->
++
++### 내가 노력한 점
++<!-- 예시
++- 특히 만족스러운 구현
++- 리팩토링이 필요한 부분
++- 코드 설계 관련 고민과 결정
++-->
++
++### 내가 배운 점
++<!-- 예시
++- 가장 큰 배움이 있었던 부분
++- 추가 학습이 필요한 영역
++- 실무 적용 가능성
++-->
++
++### 궁금한 점
++<!-- 예시
++- 과제에서 모호하거나 애매했던 부분
++- 과제에서 좋았던 부분
++-->
++
++## 리뷰 받고 싶은 내용
++
++<!--
++피드백 받고 싶은 내용을 구체적으로 남겨주세요
++모호한 요청은 피드백을 남기기 어렵습니다.
++
++참고링크: https://chatgpt.com/share/675b6129-515c-8001-ba72-39d0fa4c7b62
++
++모호한 요청의 예시)
++- 코드 스타일에 대한 피드백 부탁드립니다.
++- 코드 구조에 대한 피드백 부탁드립니다.
++- 개념적인 오류에 대한 피드백 부탁드립니다.
++- 추가 구현이 필요한 부분에 대한 피드백 부탁드립니다.
++
++구체적인 요청의 예시)
++- 현재 함수와 변수명을 보면 직관성이 떨어지는 것 같습니다. 함수와 변수를 더 명확하게 이름 지을 수 있는 방법에 대해 조언해주실 수 있나요?
++- 현재 파일 단위로 코드가 분리되어 있지만, 모듈화나 계층화가 부족한 것 같습니다. 어떤 기준으로 클래스를 분리하거나 모듈화를 진행하면 유지보수에 도움이 될까요?
++- MVC 패턴을 따르려고 했는데, 제가 구현한 구조가 MVC 원칙에 맞게 잘 구성되었는지 검토해주시고, 보완할 부분을 제안해주실 수 있나요?
++- 컴포넌트 간의 의존성이 높아져서 테스트하기 어려운 상황입니다. 의존성을 낮추고 테스트 가능성을 높이는 구조 개선 방안이 있을까요?
++-->
++
++## 이번주의 WIL(Weekly I Learned)
++<!-- 이번 주 학습 중 기억에 남는 점, 깨달은 것들을 자유롭게 정리해 주세요 -->
+diff --git a/package.json b/package.json
+index b7e4ed3..40738e5 100644
+--- a/package.json
++++ b/package.json
+@@ -19,6 +19,8 @@
+     "test:basic": "vitest basic",
+     "test:advanced": "vitest advanced",
+     "test:ui": "vitest --ui",
++    "test:ui:basic": "vitest --ui basic",
++    "test:ui:advanced": "vitest --ui advanced",
+     "prepare": "husky"
+   },
+   "dependencies": {
+@@ -35,11 +37,12 @@
+     "@types/react-dom": "^18.3.0",
+     "@vitejs/plugin-react-swc": "^3.5.0",
+     "@vitest/coverage-v8": "^2.1.2",
++    "@vitest/ui": "2.1.9",
+     "eslint": "^9.9.0",
+-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+-    "eslint-plugin-react-refresh": "^0.4.9",
+     "eslint-config-prettier": "^9.1.0",
+     "eslint-plugin-prettier": "^5.2.1",
++    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
++    "eslint-plugin-react-refresh": "^0.4.9",
+     "globals": "^15.9.0",
+     "husky": "^9.1.7",
+     "jsdom": "^25.0.1",
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+index 4835dd8..5d5b0ea 100644
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -41,7 +41,10 @@ importers:
+         version: 3.8.1(vite@5.4.17)
+       '@vitest/coverage-v8':
+         specifier: ^2.1.2
+-        version: 2.1.9(vitest@2.1.9(jsdom@25.0.1))
++        version: 2.1.9(vitest@2.1.9)
++      '@vitest/ui':
++        specifier: 2.1.9
++        version: 2.1.9(vitest@2.1.9)
+       eslint:
+         specifier: ^9.9.0
+         version: 9.24.0
+@@ -83,7 +86,7 @@ importers:
+         version: 5.4.17
+       vitest:
+         specifier: ^2.1.2
+-        version: 2.1.9(jsdom@25.0.1)
++        version: 2.1.9(@vitest/ui@2.1.9)(jsdom@25.0.1)
+ 
+ packages:
+ 
+@@ -404,6 +407,9 @@ packages:
+     engines: {node: '>=18'}
+     hasBin: true
+ 
++  '@polka/url@1.0.0-next.29':
++    resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
++
+   '@rollup/rollup-android-arm-eabi@4.39.0':
+     resolution: {integrity: sha512-lGVys55Qb00Wvh8DMAocp5kIcaNzEFTmGhfFd88LfaogYTRKrdxgtlO5H6S49v2Nd8R2C6wLOal0qv6/kCkOwA==}
+     cpu: [arm]
+@@ -715,6 +721,11 @@ packages:
+   '@vitest/spy@2.1.9':
+     resolution: {integrity: sha512-E1B35FwzXXTs9FHNK6bDszs7mtydNi5MIfUWpceJ8Xbfb1gBMscAnwLbEu+B44ed6W3XjL9/ehLPHR1fkf1KLQ==}
+ 
++  '@vitest/ui@2.1.9':
++    resolution: {integrity: sha512-izzd2zmnk8Nl5ECYkW27328RbQ1nKvkm6Bb5DAaz1Gk59EbLkiCMa6OLT0NoaAYTjOFS6N+SMYW1nh4/9ljPiw==}
++    peerDependencies:
++      vitest: 2.1.9
++
+   '@vitest/utils@2.1.9':
+     resolution: {integrity: sha512-v0psaMSkNJ3A2NMrUEHFRzJtDPFn+/VWZ5WxImB21T9fjucJRmS7xCS3ppEnARb9y11OAzaD+P2Ps+b+BGX5iQ==}
+ 
+@@ -1059,6 +1070,17 @@ packages:
+   fastq@1.19.1:
+     resolution: {integrity: sha512-GwLTyxkCXjXbxqIhTsMI2Nui8huMPtnxg7krajPJAjnEG/iiOS7i+zCtWGZR9G0NBKbXKh6X9m9UIsYX/N6vvQ==}
+ 
++  fdir@6.4.3:
++    resolution: {integrity: sha512-PMXmW2y1hDDfTSRc9gaXIuCCRpuoz3Kaz8cUelp3smouvfT632ozg2vrT6lJsHKKOF59YLbOGfAWGUcKEfRMQw==}
++    peerDependencies:
++      picomatch: ^3 || ^4
++    peerDependenciesMeta:
++      picomatch:
++        optional: true
++
++  fflate@0.8.2:
++    resolution: {integrity: sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==}
++
+   file-entry-cache@8.0.0:
+     resolution: {integrity: sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==}
+     engines: {node: '>=16.0.0'}
+@@ -1384,6 +1406,10 @@ packages:
+     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
+     engines: {node: '>=16 || 14 >=14.17'}
+ 
++  mrmime@2.0.1:
++    resolution: {integrity: sha512-Y3wQdFg2Va6etvQ5I82yUhGdsKrcYox6p7FfL1LbK2J4V01F9TGlepTIhnK24t7koZibmg82KGglhA1XK5IsLQ==}
++    engines: {node: '>=10'}
++
+   ms@2.1.3:
+     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
+ 
+@@ -1462,6 +1488,10 @@ packages:
+     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
+     engines: {node: '>=8.6'}
+ 
++  picomatch@4.0.2:
++    resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
++    engines: {node: '>=12'}
++
+   pidtree@0.6.0:
+     resolution: {integrity: sha512-eG2dWTVw5bzqGRztnHExczNxt5VGsE6OwTeCG3fdUf9KBsZzO3R5OIIIzWR+iZA0NtZ+RDVdaoE2dK1cn6jH4g==}
+     engines: {node: '>=0.10'}
+@@ -1583,6 +1613,10 @@ packages:
+     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
+     engines: {node: '>=14'}
+ 
++  sirv@3.0.1:
++    resolution: {integrity: sha512-FoqMu0NCGBLCcAkS1qA+XJIQTR6/JHfQXl+uGteNCQ76T91DMUjPa9xfmeqMY3z80nLSg9yQmNjK0Px6RWsH/A==}
++    engines: {node: '>=18'}
++
+   slice-ansi@5.0.0:
+     resolution: {integrity: sha512-FC+lgizVPfie0kkhqUScwRu1O/lF6NOgJmlCgK+/LYxDCTk8sGelYaHDhFcDN+Sn3Cv+3VSa4Byeo+IMCzpMgQ==}
+     engines: {node: '>=12'}
+@@ -1658,6 +1692,10 @@ packages:
+   tinyexec@0.3.2:
+     resolution: {integrity: sha512-KQQR9yN7R5+OSwaK0XQoj22pwHoTlgYqmUscPYoknOoWCWfj/5/ABTMRi69FrKU5ffPVh5QcFikpWJI/P1ocHA==}
+ 
++  tinyglobby@0.2.12:
++    resolution: {integrity: sha512-qkf4trmKSIiMTs/E63cxH+ojC2unam7rJ0WrauAzpT3ECNTxGRMlaXxVbfxMUC/w0LaYk6jQ4y/nGR9uBO3tww==}
++    engines: {node: '>=12.0.0'}
++
+   tinypool@1.0.2:
+     resolution: {integrity: sha512-al6n+QEANGFOMf/dmUMsuS5/r9B06uwlyNjZZql/zv8J7ybHCgoihBNORZCY2mzUuAnomQa2JdhyHKzZxPCrFA==}
+     engines: {node: ^18.0.0 || >=20.0.0}
+@@ -1681,6 +1719,10 @@ packages:
+     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
+     engines: {node: '>=8.0'}
+ 
++  totalist@3.0.1:
++    resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
++    engines: {node: '>=6'}
++
+   tough-cookie@5.1.2:
+     resolution: {integrity: sha512-FVDYdxtnj0G6Qm/DhNPSb8Ju59ULcup3tuJxkFb5K8Bv2pUXILbf0xZWU8PX8Ov19OXljbUyveOFwRMwkXzO+A==}
+     engines: {node: '>=16'}
+@@ -2093,6 +2135,8 @@ snapshots:
+     dependencies:
+       playwright: 1.51.1
+ 
++  '@polka/url@1.0.0-next.29': {}
++
+   '@rollup/rollup-android-arm-eabi@4.39.0':
+     optional: true
+ 
+@@ -2341,7 +2385,7 @@ snapshots:
+     transitivePeerDependencies:
+       - '@swc/helpers'
+ 
+-  '@vitest/coverage-v8@2.1.9(vitest@2.1.9(jsdom@25.0.1))':
++  '@vitest/coverage-v8@2.1.9(vitest@2.1.9)':
+     dependencies:
+       '@ampproject/remapping': 2.3.0
+       '@bcoe/v8-coverage': 0.2.3
+@@ -2355,7 +2399,7 @@ snapshots:
+       std-env: 3.9.0
+       test-exclude: 7.0.1
+       tinyrainbow: 1.2.0
+-      vitest: 2.1.9(jsdom@25.0.1)
++      vitest: 2.1.9(@vitest/ui@2.1.9)(jsdom@25.0.1)
+     transitivePeerDependencies:
+       - supports-color
+ 
+@@ -2393,6 +2437,17 @@ snapshots:
+     dependencies:
+       tinyspy: 3.0.2
+ 
++  '@vitest/ui@2.1.9(vitest@2.1.9)':
++    dependencies:
++      '@vitest/utils': 2.1.9
++      fflate: 0.8.2
++      flatted: 3.3.3
++      pathe: 1.1.2
++      sirv: 3.0.1
++      tinyglobby: 0.2.12
++      tinyrainbow: 1.2.0
++      vitest: 2.1.9(@vitest/ui@2.1.9)(jsdom@25.0.1)
++
+   '@vitest/utils@2.1.9':
+     dependencies:
+       '@vitest/pretty-format': 2.1.9
+@@ -2742,6 +2797,12 @@ snapshots:
+     dependencies:
+       reusify: 1.1.0
+ 
++  fdir@6.4.3(picomatch@4.0.2):
++    optionalDependencies:
++      picomatch: 4.0.2
++
++  fflate@0.8.2: {}
++
+   file-entry-cache@8.0.0:
+     dependencies:
+       flat-cache: 4.0.1
+@@ -3077,6 +3138,8 @@ snapshots:
+ 
+   minipass@7.1.2: {}
+ 
++  mrmime@2.0.1: {}
++
+   ms@2.1.3: {}
+ 
+   nanoid@3.3.11: {}
+@@ -3143,6 +3206,8 @@ snapshots:
+ 
+   picomatch@2.3.1: {}
+ 
++  picomatch@4.0.2: {}
++
+   pidtree@0.6.0: {}
+ 
+   playwright-core@1.51.1: {}
+@@ -3263,6 +3328,12 @@ snapshots:
+ 
+   signal-exit@4.1.0: {}
+ 
++  sirv@3.0.1:
++    dependencies:
++      '@polka/url': 1.0.0-next.29
++      mrmime: 2.0.1
++      totalist: 3.0.1
++
+   slice-ansi@5.0.0:
+     dependencies:
+       ansi-styles: 6.2.1
+@@ -3336,6 +3407,11 @@ snapshots:
+ 
+   tinyexec@0.3.2: {}
+ 
++  tinyglobby@0.2.12:
++    dependencies:
++      fdir: 6.4.3(picomatch@4.0.2)
++      picomatch: 4.0.2
++
+   tinypool@1.0.2: {}
+ 
+   tinyrainbow@1.2.0: {}
+@@ -3352,6 +3428,8 @@ snapshots:
+     dependencies:
+       is-number: 7.0.0
+ 
++  totalist@3.0.1: {}
++
+   tough-cookie@5.1.2:
+     dependencies:
+       tldts: 6.1.85
+@@ -3412,7 +3490,7 @@ snapshots:
+     optionalDependencies:
+       fsevents: 2.3.3
+ 
+-  vitest@2.1.9(jsdom@25.0.1):
++  vitest@2.1.9(@vitest/ui@2.1.9)(jsdom@25.0.1):
+     dependencies:
+       '@vitest/expect': 2.1.9
+       '@vitest/mocker': 2.1.9(vite@5.4.17)
+@@ -3435,6 +3513,7 @@ snapshots:
+       vite-node: 2.1.9
+       why-is-node-running: 2.3.0
+     optionalDependencies:
++      '@vitest/ui': 2.1.9(vitest@2.1.9)
+       jsdom: 25.0.1
+     transitivePeerDependencies:
+       - less
+diff --git a/src/@lib/equalities/deepEquals.ts b/src/@lib/equalities/deepEquals.ts
+index af583d1..08c8d72 100644
+--- a/src/@lib/equalities/deepEquals.ts
++++ b/src/@lib/equalities/deepEquals.ts
+@@ -1,3 +1,42 @@
+-export function deepEquals<T>(objA: T, objB: T): boolean {
+-  return objA === objB;
+-}
++// deepEquals 함수는 두 값의 깊은 비교를 수행합니다.
++export function deepEquals(objA: any, objB: any): boolean {
++  // 1. 기본 타입이거나 null/undefined인 경우 처리
++  if (Object.is(objA, objB)) {
++    return true;
++  }
++
++  // null 또는 undefined 중 하나라도 다르면 false
++  if (objA === null || objB === null || objA === undefined || objB === undefined) {
++    return false;
++  }
++
++  // 기본 타입이 아닌데 typeof가 다르면 false
++  if (typeof objA !== "object" || typeof objB !== "object") {
++    return false;
++  }
++
++  // 2. 둘 다 배열인 경우
++  if (Array.isArray(objA) && Array.isArray(objB)) {
++    if (objA.length !== objB.length) return false;
++    for (let i = 0; i < objA.length; i++) {
++      if (!deepEquals(objA[i], objB[i])) return false;
++    }
++    return true;
++  }
++
++  // 하나는 배열이고 하나는 객체인 경우
++  if (Array.isArray(objA) !== Array.isArray(objB)) return false;
++
++  // 3. 둘 다 일반 객체인 경우
++  const keysA = Object.keys(objA);
++  const keysB = Object.keys(objB);
++
++  if (keysA.length !== keysB.length) return false;
++
++  for (const key of keysA) {
++    if (!keysB.includes(key)) return false;
++    if (!deepEquals(objA[key], objB[key])) return false;
++  }
++
++  return true;
++}
+\ No newline at end of file
+diff --git a/src/@lib/equalities/shallowEquals.ts b/src/@lib/equalities/shallowEquals.ts
+index 56bf666..876e4fa 100644
+--- a/src/@lib/equalities/shallowEquals.ts
++++ b/src/@lib/equalities/shallowEquals.ts
+@@ -1,3 +1,39 @@
++// path: ~/Develop/front_5th_chapter1-3/src/@lib/equalities/shallowEquals.ts
++
++// shallowEquals : 얕은 비교
++// 1. 원시값은 값 자체를 비교(===, Object.is)
++// 2. 객체나 배열은 참조 주소만 비교, 내부의 값은 비교하지 않음
+ export function shallowEquals<T>(objA: T, objB: T): boolean {
+-  return objA === objB;
++
++  // 1. 두 값이 정확히 같은지 확인(===, Object.is)
++  // 원시값인 경우 값 자체를 비교
++  if (Object.is(objA, objB)) {
++    return true;
++  }
++
++  // null, undefined인 경우 처리
++  if (objA === null || objB === null || objA === undefined || objB === undefined) {
++    return false;
++  }
++
++  // 2. 둘 중 하나라도 객체가 아닌 경우 처리
++  if (typeof objA !== "object" || typeof objB !== "object") return false;
++
++  // 3. 객체의 키 개수가 다른 경우 처리
++  const keysA = Object.keys(objA);
++  const keysB = Object.keys(objB);
++
++  // 객체의 키 개수가 다르면 false
++  if (keysA.length !== keysB.length) return false;
++
++
++  // 4. 모든 키에 대해 얕은 비교 수행
++  for (const key in objA) {
++    // 키가 objB에 없거나, 값이 다른 경우 false
++    if (!keysB.includes(key) || !Object.is(objA[key], objB[key])) {
++      return false;
++    }
++  }
++
++  return true;
+ }
+diff --git a/src/@lib/hocs/memo.ts b/src/@lib/hocs/memo.ts
+index d43559d..33c44b4 100644
+--- a/src/@lib/hocs/memo.ts
++++ b/src/@lib/hocs/memo.ts
+@@ -1,10 +1,18 @@
+-/* eslint-disable @typescript-eslint/no-unused-vars */
+ import { shallowEquals } from "../equalities";
+-import { ComponentType } from "react";
++import { ComponentType, createElement, ReactNode } from "react";
+ 
+ export function memo<P extends object>(
+   Component: ComponentType<P>,
+   _equals = shallowEquals,
+ ) {
+-  return Component;
+-}
++  let prevProps: P | null = null;
++  let memorized: ReactNode | null = null;
++
++  return function MemoizedComponent(props: P) {
++    if (prevProps === null || !_equals(prevProps, props)) {
++      memorized = createElement(Component, props);
++      prevProps = props;
++    }
++    return memorized as ReactNode;
++  };
++}
+\ No newline at end of file
+diff --git a/src/@lib/hooks/useCallback.ts b/src/@lib/hooks/useCallback.ts
+index e71e647..b675a58 100644
+--- a/src/@lib/hooks/useCallback.ts
++++ b/src/@lib/hooks/useCallback.ts
+@@ -1,10 +1,11 @@
+-/* eslint-disable @typescript-eslint/no-unused-vars,@typescript-eslint/no-unsafe-function-type */
+ import { DependencyList } from "react";
++import { useMemo } from "./useMemo";
+ 
+ export function useCallback<T extends Function>(
+-  factory: T,
+-  _deps: DependencyList,
+-) {
+-  // 직접 작성한 useMemo를 통해서 만들어보세요.
+-  return factory as T;
+-}
++  callback: T,
++  deps: DependencyList,
++): T {
++  // useMemo를 사용하여 callback을 메모이제이션
++  // 의존성 배열이 변경되지 않으면 동일한 함수 참조를 유지
++  return useMemo(() => callback, deps);
++}
+\ No newline at end of file
+diff --git a/src/@lib/hooks/useMemo.ts b/src/@lib/hooks/useMemo.ts
+index 95930d6..3e97c8a 100644
+--- a/src/@lib/hooks/useMemo.ts
++++ b/src/@lib/hooks/useMemo.ts
+@@ -1,12 +1,33 @@
+-/* eslint-disable @typescript-eslint/no-unused-vars */
+ import { DependencyList } from "react";
+ import { shallowEquals } from "../equalities";
++import { useRef } from "./useRef";
+ 
+ export function useMemo<T>(
+   factory: () => T,
+-  _deps: DependencyList,
+-  _equals = shallowEquals,
++  deps: DependencyList,
++  equals = shallowEquals,
+ ): T {
+-  // 직접 작성한 useRef를 통해서 만들어보세요.
+-  return factory();
+-}
++  // 이전 의존성과 결과를 저장하기 위한 ref 생성
++  const ref = useRef<{
++    deps: DependencyList;
++    result: T;
++    initialized: boolean;
++  }>({
++    deps: [],
++    result: undefined as unknown as T,
++    initialized: false,
++  });
++
++  // 초기화 또는 deps가 변경되었을 때만 재계산
++  const needsRecalculation = !ref.current.initialized ||
++    !equals(deps, ref.current.deps);
++
++  if (needsRecalculation) {
++    // 팩토리 함수 실행 및 결과 저장
++    ref.current.result = factory();
++    ref.current.deps = deps;
++    ref.current.initialized = true;
++  }
++
++  return ref.current.result;
++}
+\ No newline at end of file
+diff --git a/src/@lib/hooks/useRef.ts b/src/@lib/hooks/useRef.ts
+index 2dc9e83..08b0d38 100644
+--- a/src/@lib/hooks/useRef.ts
++++ b/src/@lib/hooks/useRef.ts
+@@ -1,4 +1,22 @@
++// path: ~/Develop/front_5th_chapter1-3/src/@lib/hooks/useRef.ts
++
++import { useState } from 'react';
++
++// useRef는 React에서 값을 저장할 수 있는 Hook입니다.
++// - 컴포넌트가 리렌더링되어도 ref 객체는 동일하게 유지됩니다.
++// - ref.current에 값을 저장할 수 있으며, 이 값은 바뀌어도 리렌더링되지 않습니다.
++// - 주로 DOM 요소 접근, 렌더링 간 값 유지, 이전 값 추적 등에 사용됩니다.
++
++/**
++ * @template T T는 이 함수에서 사용될 타입 변수입니다.
++ * @param {T} initialValue 초기값. T 타입을 가집니다.
++ * @returns {{ current: T }} current 속성을 가진 객체를 반환합니다.
++ * 
++ * @example
++ * const ref = useRef<number>(0);
++ * <number> 라는 제네릭 타입은 추론 하므로 생략 가능
++ */
+ export function useRef<T>(initialValue: T): { current: T } {
+-  // React의 useState를 이용해서 만들어보세요.
+-  return { current: initialValue };
++  const [ref] = useState<{ current: T }>({ current: initialValue });
++  return ref;
+ }
