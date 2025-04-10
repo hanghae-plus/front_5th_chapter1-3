@@ -2,9 +2,9 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { App } from "@app/App";
-import * as generateItems from "@shared/tests/generateItems";
-import * as renderLog from "@shared/tests/renderLog";
+import { App } from "../app/App";
+import * as generateItems from "../shared/tests/generateItems";
+import * as renderLog from "../shared/tests/renderLog";
 
 const renderLogMock = vi.spyOn(renderLog, "renderLog");
 const generateItemsSpy = vi.spyOn(generateItems, "generateItems");
