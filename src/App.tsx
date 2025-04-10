@@ -1,53 +1,16 @@
-import React, { useState, createContext, useContext } from "react";
-import { generateItems, renderLog } from "./utils";
-
-// 타입 정의
-interface Item {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-}
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-interface Notification {
-  id: number;
-  message: string;
-  type: "info" | "success" | "warning" | "error";
-}
-
-// AppContext 타입 정의
-interface AppContextType {
-  theme: string;
-  toggleTheme: () => void;
-  user: User | null;
-  login: (email: string, password: string) => void;
-  logout: () => void;
-  notifications: Notification[];
-  addNotification: (message: string, type: Notification["type"]) => void;
-  removeNotification: (id: number) => void;
-}
-
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-// 커스텀 훅: useAppContext
-const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error("useAppContext must be used within an AppProvider");
-  }
-  return context;
-};
+import React, { useState } from "react";
+import { renderLog } from "./utils";
+import { ThemeProvider, useTheme } from "./ThemeProvider";
+import { UserProvider, useUser } from "./UserProvider";
+import { NotificationProvider, useNotification } from "./NotificationProvider";
+import { Item, ItemProvider, useItem } from "./ItemProvider";
+import { FormProvider, useForm } from "./FormProvider";
 
 // Header 컴포넌트
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
+  const { theme, toggleTheme } = useTheme();
+  const { user, login, logout } = useUser();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
@@ -55,7 +18,9 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-gray-800 text-white p-4">
+    <header
+      className={`p-4 ${theme === "light" ? "bg-blue-600 text-white" : "bg-gray-800 text-gray-200"}`}
+    >
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-2xl font-bold">샘플 애플리케이션</h1>
         <div className="flex items-center">
@@ -95,8 +60,8 @@ export const ItemList: React.FC<{
   onAddItemsClick: () => void;
 }> = ({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
+  const { theme } = useTheme();
   const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
 
   const filteredItems = items.filter(
     (item) =>
@@ -149,37 +114,10 @@ export const ItemList: React.FC<{
 };
 
 // ComplexForm 컴포넌트
-export const ComplexForm: React.FC = () => {
+export const ComplexForm: React.FC = React.memo(() => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    age: 0,
-    preferences: [] as string[],
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addNotification("폼이 성공적으로 제출되었습니다", "success");
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "age" ? parseInt(value) || 0 : value,
-    }));
-  };
-
-  const handlePreferenceChange = (preference: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      preferences: prev.preferences.includes(preference)
-        ? prev.preferences.filter((p) => p !== preference)
-        : [...prev.preferences, preference],
-    }));
-  };
+  const { formData, handleSubmit, handleInputChange, handlePreferenceChange } =
+    useForm();
 
   return (
     <div className="mt-8">
@@ -231,12 +169,12 @@ export const ComplexForm: React.FC = () => {
       </form>
     </div>
   );
-};
+});
 
 // NotificationSystem 컴포넌트
 export const NotificationSystem: React.FC = () => {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAppContext();
+  const { notifications, removeNotification } = useNotification();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">
@@ -266,79 +204,54 @@ export const NotificationSystem: React.FC = () => {
   );
 };
 
-// 메인 App 컴포넌트
-const App: React.FC = () => {
-  const [theme, setTheme] = useState("light");
-  const [items, setItems] = useState(generateItems(1000));
-  const [user, setUser] = useState<User | null>(null);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
-
-  const addItems = () => {
-    setItems((prevItems) => [
-      ...prevItems,
-      ...generateItems(1000, prevItems.length),
-    ]);
-  };
-
-  const login = (email: string) => {
-    setUser({ id: 1, name: "홍길동", email });
-    addNotification("성공적으로 로그인되었습니다", "success");
-  };
-
-  const logout = () => {
-    setUser(null);
-    addNotification("로그아웃되었습니다", "info");
-  };
-
-  const addNotification = (message: string, type: Notification["type"]) => {
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      type,
-    };
-    setNotifications((prev) => [...prev, newNotification]);
-  };
-
-  const removeNotification = (id: number) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id),
-    );
-  };
-
-  const contextValue: AppContextType = {
-    theme,
-    toggleTheme,
-    user,
-    login,
-    logout,
-    notifications,
-    addNotification,
-    removeNotification,
-  };
+// MainContent 컴포넌트
+const MainContent: React.FC = () => {
+  const { theme } = useTheme();
+  const { items, addItems } = useItem();
 
   return (
-    <AppContext.Provider value={contextValue}>
-      <div
-        className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-      >
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2 md:pr-4">
-              <ItemList items={items} onAddItemsClick={addItems} />
-            </div>
-            <div className="w-full md:w-1/2 md:pl-4">
-              <ComplexForm />
-            </div>
+    <div
+      className={`min-h-screen ${theme === "light" ? "" : "bg-gray-900 text-white"}`}
+    >
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/2 md:pr-4">
+            <ItemList items={items} onAddItemsClick={addItems} />
+          </div>
+          <div className="w-full md:w-1/2 md:pl-4">
+            <ComplexForm />
           </div>
         </div>
-        <NotificationSystem />
       </div>
-    </AppContext.Provider>
+    </div>
+  );
+};
+
+// Layout 컴포넌트
+const Layout: React.FC = () => {
+  return (
+    <>
+      <Header />
+      <MainContent />
+      <NotificationSystem />
+    </>
+  );
+};
+
+// 메인 App 컴포넌트
+const App: React.FC = () => {
+  return (
+    <ItemProvider>
+      <NotificationProvider>
+        <FormProvider>
+          <UserProvider>
+            <ThemeProvider>
+              <Layout />
+            </ThemeProvider>
+          </UserProvider>
+        </FormProvider>
+      </NotificationProvider>
+    </ItemProvider>
   );
 };
 
