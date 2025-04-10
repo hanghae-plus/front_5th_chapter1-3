@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { ThemeContext } from "../context/ThemeContext";
-import { ThemeProvider } from "../context/ThemeProvider";
+import { ThemeProvider } from "../provider/ThemeProvider";
 import { useContextValue } from "../context/useContextValue";
 
 export default function AppContainer({ children }: PropsWithChildren) {
