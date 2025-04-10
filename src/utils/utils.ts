@@ -12,3 +12,12 @@ export const generateItems = (count: number, start = 0) => {
     price: Math.floor(Math.random() * 100000) + 1000,
   }));
 };
+
+export const isObject = <T>(value: T) => {
+  if (value === null) return false;
+  return typeof value === "object";
+};
+
+export const isArray = <T>(value: T) => {
+  return Array.isArray(value);
+};
