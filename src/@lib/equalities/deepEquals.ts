@@ -35,6 +35,7 @@ export function deepEquals(objA: any, objB: any): boolean {
 
   //    - 재귀적으로 각 속성에 대해 deepEquals 호출
   return objAKeys.every(
+    // eslint-disable-next-line no-prototype-builtins
     (key) => objB.hasOwnProperty(key) && deepEquals(objA[key], objB[key]),
   );
 }
