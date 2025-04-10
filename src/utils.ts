@@ -12,3 +12,10 @@ export const generateItems = (count: number, start = 0) => {
     price: Math.floor(Math.random() * 100000) + 1000,
   }));
 };
+
+//  객체 값인지 확인하는 함수
+export function isObjectPair<T>(a: T, b: T): boolean {
+  return (
+    typeof a === "object" && a !== null && typeof b === "object" && b !== null
+  );
+}

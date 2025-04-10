@@ -62,7 +62,9 @@ describe("최적화된 App 컴포넌트 테스트", () => {
     renderLogMock.mockClear();
 
     const searchInput = await screen.findByPlaceholderText("상품 검색...");
-    await fireEvent.change(searchInput, { target: { value: "검색어" } });
+    await fireEvent.change(searchInput, {
+      target: { value: "검색어" },
+    });
 
     expect(renderLogMock).toHaveBeenCalledWith("ItemList rendered");
     expect(renderLogMock).toHaveBeenCalledTimes(1);
@@ -73,7 +75,9 @@ describe("최적화된 App 컴포넌트 테스트", () => {
     renderLogMock.mockClear();
 
     const nameInput = await screen.findByPlaceholderText("이름");
-    await fireEvent.change(nameInput, { target: { value: "홍길동" } });
+    await fireEvent.change(nameInput, {
+      target: { value: "홍길동" },
+    });
 
     expect(renderLogMock).toHaveBeenCalledWith("ComplexForm rendered");
     expect(renderLogMock).toHaveBeenCalledTimes(1);
@@ -85,7 +89,6 @@ describe("최적화된 App 컴포넌트 테스트", () => {
 
     const submitButton = await screen.findByText("제출");
     await fireEvent.click(submitButton);
-
     expect(renderLogMock).toHaveBeenCalledWith("NotificationSystem rendered");
     expect(renderLogMock).toHaveBeenCalledWith("ComplexForm rendered");
     expect(renderLogMock).toHaveBeenCalledTimes(2);

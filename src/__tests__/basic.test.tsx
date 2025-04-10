@@ -10,6 +10,7 @@ import {
   useMemo,
   useRef,
 } from "../@lib";
+
 import { act, fireEvent, render } from "@testing-library/react";
 import React, {
   ComponentProps,
@@ -590,7 +591,10 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
 
     describe.each([
       { spec: "직접 만든 memo", memo },
-      { spec: "React에서 제공하는 memo", memo: React.memo as typeof memo },
+      {
+        spec: "React에서 제공하는 memo",
+        memo: React.memo as typeof memo,
+      },
     ])("$spec", ({ memo }) => {
       it("props로 전달하는 값이 변경되어야 리렌더링 된다.", () => {
         const MemoizedComponent = memo(TestComponent);
