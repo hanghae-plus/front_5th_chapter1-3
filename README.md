@@ -1,50 +1,28 @@
-# React + TypeScript + Vite
+# Chapter 1-3 React, Beyond the Basics 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> 💡 목표
+> - react.memo를 쓰면서 구현 방법에 대한 고민을 해본 적이 있는가?
+> - useMemo와 useCallback과 같은 메모이제이션 기법을 통해 성능을 최적화 할 수 있는 방법
+> - 리액트 프로파일링 도구를 사용해 성능을 분석해 최적화하는 과정을 알아보자.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 과제 진행하면서 든 생각 && 고민한 내용
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### shallowEquals, DeepEquals
+- 얕은 복사와 깊은 복사에 대한 확실한 개념이 부족함. 
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### useRef
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- 이전 상태를 참조하기 위한 저장소
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### useMemo
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+변경값을 메모이제이션하는 훅
+
+### useCallback
+
+useMemo의 Wrapper 느낌
+
+### memo 
