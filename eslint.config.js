@@ -25,6 +25,13 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+      // prettier 줄 바꿈 문자 관련 설정 추가
+      "prettier/prettier": [
+        "error",
+        {
+          endOfLine: "auto",
+        },
+      ],
     },
   },
   eslintPluginPrettier,
