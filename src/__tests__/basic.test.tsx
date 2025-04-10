@@ -2,11 +2,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   deepEquals,
-  deepMemo,
-  memo,
   shallowEquals,
   useCallback,
   useDeepMemo,
+  memo,
+  deepMemo,
   useMemo,
   useRef,
 } from "../@lib";
