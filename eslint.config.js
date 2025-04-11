@@ -18,15 +18,20 @@ export default tseslint.config(
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
+      prettier: prettierPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      "@typescript-eslint/no-explicit-any": "off",
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },
       ],
+      "prettier/prettier": [
+        "error",
+        { endOfLine: "auto", trailingComma: "all" },
+      ],
     },
   },
-  eslintPluginPrettier,
-  eslintConfigPrettier,
+  eslintConfigPrettier
 );

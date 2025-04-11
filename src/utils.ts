@@ -1,3 +1,6 @@
+import React, { createContext } from "react";
+import { AppContextType } from "./type/type";
+
 export function renderLog(message: string) {
   console.log(message);
 }
@@ -12,3 +15,5 @@ export const generateItems = (count: number, start = 0) => {
     price: Math.floor(Math.random() * 100000) + 1000,
   }));
 };
+
+export const AppContext = createContext<AppContextType | undefined>(undefined);
