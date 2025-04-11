@@ -1,7 +1,7 @@
 import { isRecord } from "../utils/isRecord";
 
 export function deepEquals<T>(objA: T, objB: T): boolean {
-  if (!objA || !objB) return objA === objB;
+  if (Object.is(objA, objB)) return true;
 
   if (Array.isArray(objA) && Array.isArray(objB)) {
     if (objA.length !== objB.length) return false;
@@ -13,7 +13,7 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
     return deepEqualsRecord(objA, objB);
   }
 
-  return objA === objB;
+  return false;
 }
 
 function deepEqualsRecord(
