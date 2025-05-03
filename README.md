@@ -1,50 +1,106 @@
-# React + TypeScript + Vite
+## 과제 체크포인트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 배포 링크
 
-Currently, two official plugins are available:
+🔗https://nohgh.github.io/front_5th_chapter1-3/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<!--
+배포 링크를 적어주세요
+예시: https://<username>.github.io/front-5th-chapter1-1/
 
-## Expanding the ESLint configuration
+배포가 완료되지 않으면 과제를 통과할 수 없습니다.
+배포 후에 정상 작동하는지 확인해주세요.
+-->
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 기본과제
 
-- Configure the top-level `parserOptions` property like this:
+- [x] shallowEquals 구현 완료
+- [x] deepEquals 구현 완료
+- [x] memo 구현 완료
+- [x] deepMemo 구현 완료
+- [x] useRef 구현 완료
+- [x] useMemo 구현 완료
+- [x] useDeepMemo 구현 완료
+- [x] useCallback 구현 완료
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 심화 과제
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- [x] 기본과제에서 작성한 hook을 이용하여 렌더링 최적화를 진행하였다.
+- [x] Context 코드를 개선하여 렌더링을 최소화하였다.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## 과제 셀프회고
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+<!-- 과제에 대한 회고를 작성해주세요 -->
+
+### 기술적 성장과 그 과정
+
+- shallow, deep Equals를 구현하며 각각의 차이점과 적용해야하는 시점에 대해 고민하였습니다.
+  - 메모이제이션에서 사용될 경우, shallow가 연산에 있어서 더 저렴하게 비교할 수 있다고 생각하였습니다.
+- useRef를 useState의 기본동작을 활용해 구현하였습니다. 이 과정에서 렌더링 과정, 자세한 useState와 useRef의 동작 원리를 학습하였습니다.
+
+- useMemo, useCallback이 어떤 차이점이 있고 어떤 상황에서 써야하는지 잘 몰랐지만, 두 훅을 useRef와 비교함수를 통해 구현하며 작동 방식과 어떤 케이스에 적용할 수 있는지를 알게되었습니다.
+
+- memo를 구현하는 과정에서
+  - 기존에 어느정도 알고만 있었던 클로저를 사용해 이전 컴포넌트와 element를 기록하도록 하였고 클로저에 대해 더 자세히 알아볼 수 있었습니다.
+  - HOF, HOC를 학습하고 적용하여 해당 개념이 주는 이점들을 이해할 수 있었습니다.
+- context api, 의존성 주입에 대해 학습하였습니다.
+
+      - 기존에는 context api를 깊이 이해하지 못해 recoil, zustand와 같은 상태관리를 위한 도구로 생각하였지만, 이번 과제를 수행하며 context는 의존성 주입을 위해 사용한다는 것을 배웠습니다.
+
+  의존성 주입이라는 개념이 다소 모호하고 추상적이라 생각되어 아직 완전히 이해하였다고 생각이 들지 않습니다.
+  하지만 의존성 주입과 context api를 공부하며 상태 관리, 불변성, 가변성과 같은 키워드를 중심으로 생각하다 보니 어느정도 감(?)이 잡혔다고 생각이 듭니다 (추후 계속 공부하겠습니다).
+
+- useState를 React에서 구현하기 - 결론: 실패하였습니다. - useState를 구현하게 된 이유: useRef를 구현하기 위해 useState를 사용하며 useState도 같이 구현을 배보자! 라는 생각이 들었고, 심화과제를 마치고 useState 구현을 시작하였습니다. - useState를 구현하며 참고한 React의 useState 타입명세
+  ![image](https://github.com/user-attachments/assets/2e15512d-0e21-46c7-b3ac-dd555832ce35) - 위의 타입 명세와 기본 동작을 토대로 구현한 코드
+
+![image](https://github.com/user-attachments/assets/dfbc290d-852f-4044-8a32-adae768f402f) - 현재 코드의 문제점 - state변경 시 리렌더링을 시킬 방법이 없습니다.(있다면 공유 부탁드립니다...) - 리렌더를 시키는 함수를 찾아보니 마땅히 나오지 않아 useState를 구현하는 것이지만 useState에서 제공하는 setState로 리렌더링을 유발하는 생각을 하였으나 hook의 원칙에 따라 함수에서는 hook을 호출할 수 없기에 해당 방식을 적용하지 못하였습니다. (적용하더라도 useState를 구현했다고 생각하지도 않습니다.)
+
+    - 앞으로의 계획
+        - 준일 코치님의 블로그를 나중에 참고하니 1,2주차때 했던 vanila JS기반의 코드에서 작성하면 구현을 할 수 있음을 확인하였습니다.
+        당장은 힘들더라도 꼭 1,2 주차에서 사용한 코드에  useState를 붙여보겠습니다.
+
+### 코드 품질
+
+- Context api의 Provider를 구현하며, 하나의 컨텍스트에서 사용되는 함수와 훅(ThemeContext, ThemeProvider, useThemeContext)을 한 파일에서 집중적으로 관리하였습니다. (추가적인 질문은 밑에 남기겠습니다!)
+
+### 학습 효과 분석
+
+이번 과제를 진행하며, 리액트에 대한 기본기를 한번 더 잡고 갈 수 있었습니다.
+여러 훅과 함수를 직접 작성하며, 리액트에서 동작하는 방식은 아니더라고 그 동작 방식과 기능들에 대해 깊게 이해하게 되었습니다.
+
+### 과제 피드백
+
+리액트의 기본이 되는 훅들과 메모이제이션을 학습할 수 있어서 도움이 많이 되는 과제였다고 생각합니다.
+
+## 리뷰 받고 싶은 내용
+
+![image](https://github.com/user-attachments/assets/cbeb4304-9dd2-447b-9a0d-5804d451e8ab)
+코드 품질에서 설명드린 바와 같이 한 컨텍스트에서 제공하는 컨텍스트, 프로바이더, 컨텍스트 훅을 한 파일에서 관리를 하고 있습니다.
+
+제가 생각한 바로는 위의 코드는 응집도가 강해 각각의 함수와 훅을 분리하는 것보다 관리하기 수월하다고 판단하였습니다.
+그리고 위의 코드를 단일 책임 원칙에서 생각해 보고자 하였습니다.
+
+위의 코드를 단일 책임 원칙으로 생각하면서 생긴 궁금증은 책임이라는것을 얼마나 크고 작게 분리할 수 있는지가 궁금하였습니다.
+
+예를 들자면 Theme를 관리한다.라는 책임(기능)으로 보았을때는 하나의 책임을 지킨것으로 볼 수 있지만,
+context를 생성하고, Provider를 제공하고, useContext로 컨텍스트를 제공하는 작은 책임(기능)들로 보았을때는 해당 코드가 분리되는게 맞다고 생각합니다.
+제가 접근한 방식이 단일책임원칙을 온전히 이해하지 못하여 발생하였을지 모르지만,.. 코치님의 의견을 여쭤보고 싶습니다!!
+
+<!--
+피드백 받고 싶은 내용을 구체적으로 남겨주세요
+모호한 요청은 피드백을 남기기 어렵습니다.
+
+참고링크: https://chatgpt.com/share/675b6129-515c-8001-ba72-39d0fa4c7b62
+
+모호한 요청의 예시)
+- 코드 스타일에 대한 피드백 부탁드립니다.
+- 코드 구조에 대한 피드백 부탁드립니다.
+- 개념적인 오류에 대한 피드백 부탁드립니다.
+- 추가 구현이 필요한 부분에 대한 피드백 부탁드립니다.
+
+구체적인 요청의 예시)
+- 현재 함수와 변수명을 보면 직관성이 떨어지는 것 같습니다. 함수와 변수를 더 명확하게 이름 지을 수 있는 방법에 대해 조언해주실 수 있나요?
+- 현재 파일 단위로 코드가 분리되어 있지만, 모듈화나 계층화가 부족한 것 같습니다. 어떤 기준으로 클래스를 분리하거나 모듈화를 진행하면 유지보수에 도움이 될까요?
+- MVC 패턴을 따르려고 했는데, 제가 구현한 구조가 MVC 원칙에 맞게 잘 구성되었는지 검토해주시고, 보완할 부분을 제안해주실 수 있을까요?
+- 컴포넌트 간의 의존성이 높아져서 테스트하기 어려운 상황입니다. 의존성을 낮추고 테스트 가능성을 높이는 구조 개선 방안이 있을까요?
+-->
