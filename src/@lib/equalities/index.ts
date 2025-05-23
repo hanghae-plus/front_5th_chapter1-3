@@ -1,2 +1,2 @@
-export * from "./shallowEquals";
-export * from "./deepEquals";
+export * from "./deep-equals";
+export * from "./shallow-equals";

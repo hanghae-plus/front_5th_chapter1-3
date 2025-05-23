@@ -1,50 +1,52 @@
-# React + TypeScript + Vite
+## 과제 체크포인트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 배포 링크
+- https://anveloper.github.io/front_5th_chapter1-3/
 
-Currently, two official plugins are available:
+<details><summary>기본과제</summary>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [x] shallowEquals 구현 완료
+- [x] deepEquals 구현 완료
+- [x] useRef 구현 완료
+- [x] useMemo 구현 완료
+- [x] useDeepMemo 구현 완료
+- [x] useCallback 구현 완료
+- [x] memo 구현 완료
+- [x] deepMemo 구현 완료
+</details>
 
-## Expanding the ESLint configuration
+<details><summary>심화 과제</summary>
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- [x] 기본과제에서 작성한 hook을 이용하여 렌더링 최적화를 진행하였다.
+- [x] Context 코드를 개선하여 렌더링을 최소화하였다.
+</details>
 
-- Configure the top-level `parserOptions` property like this:
+## 과제 셀프회고
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 기술적 성장
+- React Hooks의 기능과 필요성, 커스텀 훅의 개념에 대하여 다시한번 다잡고 가는 시간이었습니다.
+- 그리고 얕은 복사와 깊은 복사 관련하여 실체적인 구현을 경험하면서, 실제 업무에도 반영할 수 있는 개념을 숙달하였습니다.
+- 컴포넌트 라이프 사이클 내에서 리랜더링으로부터 값이 유지 될 수 있는 `useState`를 활용하여,  setter를 지정하지 않아 랜더링과 관계가 없는 값의 변화에 대응 할 수 있는 `useRef` 를 만드는 과정이 늘 사용하던 함수임에도 내부의 이런 로직이 있었구나 하는 지식을 알게 되었습니다.
+- 또한, `useRef`를 활용하여 의존성 배열과 함수를 랜더링에서 조건적으로 동작하며 메모이제이션 하는 과정으로, `useMemo`, `useCallback`의 동작 원리를 알게 되어  캡슐화되어 관심을 주지 않았던 로직들에 대한 구체적인 로직을 알게되어 좋았습니다.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 코드 품질
+- 테스트 코드의 단계에 맞게 구현하여, 기본 로직을 이해하였습니다.
+- 타입스크립트로 Hook과 hoc 들의 주입되는 값과 반환되는 값이 왜 그렇게 동작하는 지 알게 되어 다시한번 타입스크립트에 고마움을 느끼고 있습니다.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### 학습 효과 분석
+- 주중에 출장이 몇개 겹쳐서 주말중에 미리 해놓고 주중에 회고하듯이 코드를 다시 탐독하면서 로직에 대한 확고한 정리를 할 수 있었습니다.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### 과제 피드백
+- React 공식 문서의 액기스만 모아서 과제를 진행하는 사람이 이해하기 쉽게 구성해주신 것 같습니다.
+- 회사에서 신입이나 React를 사용하지 않는 개발자 분들에게 가끔 교육을 할 때가 있는데, Hook에 대하여 설명하라고 하면, 해당 과제를 참조하여 교육자료를 구성할 것 같습니다.
+- equals부터 이어지는 알찬 과제인 것 같습니다.
+
+## 리뷰 받고 싶은 내용
+- 로직을 이해하기 쉽게 구성된 것에 테스트 코드 구성과 과정이 매우 알찾다 생각이 드는데, 실제 현업에서 기능을 어느 수준? 단위? 로 구분하는 지 궁금합니다. 
+- 예를 들어, `상품 등록`이라는 절차를 진행하는데 있어서 
+  - 구성된 컴포넌트 > 함수 > API로 기능이 구분된 파일 단위로 나뉘는 지, 
+  - 아니면 사용자의 행동 순서에 따라 입력 > (함수 동작) > 추가 선택 > (API 통신) > 결과 확인 > 등록 
+  - 이런 유기적인 테스트로 진행하는 지 궁금합니다.
+- 2주차 과제는 사용자 행동의 테스트 같은 느낌이었는데, 이번주는 함수의 동작 상태, 입력과 결과 단위로 더 눈에 안보이는 부분까지 테스트 하는 느낌을 받았습니다. 
+- 이러한 단위 테스트나 통합 테스트, 시나리오? 흐름에 의한 테스트의 사용 비중이 어떤 지 궁금합니다.
+- 아직 테스트 코드에 대한 회의적인 회사에서 일하는 입장에서 도입을 건의하면서 어떤 방향으로 예시를 보여줘야 설득력이 있을 지 고민됩니다.
