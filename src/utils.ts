@@ -12,3 +12,7 @@ export const generateItems = (count: number, start = 0) => {
     price: Math.floor(Math.random() * 100000) + 1000,
   }));
 };
+
+export const isObject = (obj: unknown): obj is Record<string, unknown> => {
+  return obj !== null && typeof obj === "object";
+};

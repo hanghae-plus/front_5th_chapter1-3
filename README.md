@@ -1,50 +1,124 @@
-# React + TypeScript + Vite
+## 과제 체크포인트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 배포 링크
 
-Currently, two official plugins are available:
+<!--
+배포 링크를 적어주세요
+예시: https://<username>.github.io/front-5th-chapter1-1/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+배포가 완료되지 않으면 과제를 통과할 수 없습니다.
+배포 후에 정상 작동하는지 확인해주세요.
+-->
+https://luwbe1.github.io/front_5th_chapter1-3/
 
-## Expanding the ESLint configuration
+### 기본과제
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- [x] shallowEquals 구현 완료
+- [x] deepEquals 구현 완료
+- [x] memo 구현 완료
+- [x] deepMemo 구현 완료
+- [x] useRef 구현 완료
+- [x] useMemo 구현 완료
+- [x] useDeepMemo 구현 완료
+- [x] useCallback 구현 완료
 
-- Configure the top-level `parserOptions` property like this:
+### 심화 과제
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- [x] 기본과제에서 작성한 hook을 이용하여 렌더링 최적화를 진행하였다.
+- [x] Context 코드를 개선하여 렌더링을 최소화하였다.
+
+## 과제 셀프회고
+
+<!-- 과제에 대한 회고를 작성해주세요 -->
+Vue 개발자로서 React를 직접 구현해야 한다는 점에 약간의 걱정이 있었지만, 실제로는 로우 레벨 훅을 중심으로 구조를 이해하는 과제였기 때문에 난이도는 높지 않았다. 구현 자체에도 오랜 시간이 걸리진 않았다... (함수 작성하는데 막막함이 있긴 했지만 과제에 친절하게 1,2,3번 순서대로 구현해야 하는 걸 미리 알려주셔서 감사했다.)
+이번 주는 본격적으로 React를 학습하는 시간이 되었다.
+얕은 비교와 깊은 비교 함수`(shallowEquals, deepEquals)`를 직접 구현해보며 비교 연산에 대한 개념을 익혔고, 다양한 커스텀 훅을 만들며 `useMemo`, `useCallback`, `useRef` 등의 동작 원리를 체험했다. 
+또한 `App.tsx`에 몰려 있던 여러 Context들을 기능별로 분리하고, 특정 상태 변화 시 해당 컴포넌트만 리렌더링되도록 구조를 개선했다. 이 과정에서 컴포넌트 정리, 타입 분리, Provider와 Hook들의 역할 분리 등 전반적인 구조 리팩토링을 진행했다.
+React의 철학을 코드 레벨에서 직접 다뤄보니, 점점 더 친숙해지고 있다는 느낌이 든다. 아직은 초기 단계지만, 탄탄한 기초를 쌓아가고 있다는 점에서 의미 있는 한 주였다.
+
+
+### 기술적 성장
+<!-- 예시
+- 새로 학습한 개념
+- 기존 지식의 재발견/심화
+- 구현 과정에서의 기술적 도전과 해결
+-->
+#### ✍️ Provider란 무엇인가?
+`Context`를 앱에 연결해주는 컴포넌트이다. 
 ```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+<ThemeProvider>
+  <MyApp />
+</ThemeProvider>
 ```
+이렇게 감싸주면, `ThemeProvider` 내부의 자식 컴포넌트 어디서든 `useThemeContext()` 같은 훅으로 `Context` 값을 읽을 수 있게 된다. 이 방식은 props drilling 없이 상태를 전역적으로 공유할 수 있다는 장점이 있다.
+**Vue**에서는 Provider 단독은 아니지만 `Context + Provider` 비슷한 개념이 존재한다. `Provide / Inject` API다. 상위 컴포넌트에서 하위 컴포넌트로 데이터를 전달할 수 있다. (여기서 중요한 건 직접적인 props 전달 없이도 가능하다는 점이다.)
+전역 상태까지는 필요 없지만, 깊은 컴포넌트 트리에서 데이터 공유할 때 보통 쓴다.
+**React**의 `Context`는 기본적으로 리렌더링을 유발하지만, **Vue**의 `provide/inject`는 기본적으로 반응형이 아니기 때문에, `ref`나 `reactive`로 구현해야 한다.
+
+#### ✍️ `ShallowEqulas`(얕은 비교)
+얕은 비교는 객체의 최상위 레벨 속성들만 비교하는 방식이다. 중첩된 객체 내부까지 재귀적으로 비교하지 않는다.
+1. 참조 동등 비교 (===)
+동일한 참조면 완전 동일한 객체이므로 true 반환
+2. 배열일 경우
+길이 비교 → 다르면 false
+요소 각각 비교 → 하나라도 다르면 false
+3. 객체일 경우
+Object.entries()로 키-값 쌍 나열
+key-value 수 비교
+각 key에 대해 값 비교
+4. 기타 primitive한 경우 비교
+숫자, 문자열, boolean 값들은 === 비교로 처리
+
+💡 왜 `shallowEquals`가 필요할까?
+첫 번째는, React의 memo 최적화에서 불필요한 리렌더링을 막기 위해 필요하다. 두 번째는, 일반적으로 React 컴포넌트는 props가 자주 바뀌지 않거나, 바뀌더라도 얕은 구조인 경우가 많다. 세 번째, deep 비교는 비용이 크고, 불필요한 연산이 많기 때문이다. 하지만 이럼에도 불구하고...
+→ 중첩된 구조에선 deepEquals가 필요
+
+### 코드 품질
+<!-- 예시
+- 특히 만족스러운 구현
+- 리팩토링이 필요한 부분
+- 코드 설계 관련 고민과 결정
+-->
+밑에 코멘트로 따로 남겼습니다.
+
+### 학습 효과 분석
+<!-- 예시
+- 가장 큰 배움이 있었던 부분
+- 추가 학습이 필요한 영역
+- 실무 적용 가능성
+-->
+밑에 코멘트로 따로 남겼습니다.
+
+### 과제 피드백
+<!-- 예시
+- 과제에서 모호하거나 애매했던 부분
+- 과제에서 좋았던 부분
+-->
+저번 주차에는 Virtual DOM을 직접 구현해보며 React의 렌더링 구조를 이해할 수 있었고, 이번 주차에는 다양한 React 훅을 다뤄보며 상태 관리와 최적화 기법에 대해 공부했다. 특히 Context API와 관련된 과제를 하면서, 왜 React가 Context를 통해 프론트엔드 생태계를 먹었는지 조금은 이해하게 되었다...
+또한 이번 주차는 저번보다 학습 자료가 더 풍부해서, 구현 전에 내용을 충분히 이해하고 과제에 접근할 수 있어 좋았다!
+
+## 리뷰 받고 싶은 내용
+
+<!--
+피드백 받고 싶은 내용을 구체적으로 남겨주세요
+모호한 요청은 피드백을 남기기 어렵습니다.
+
+참고링크: https://chatgpt.com/share/675b6129-515c-8001-ba72-39d0fa4c7b62
+
+모호한 요청의 예시)
+- 코드 스타일에 대한 피드백 부탁드립니다.
+- 코드 구조에 대한 피드백 부탁드립니다.
+- 개념적인 오류에 대한 피드백 부탁드립니다.
+- 추가 구현이 필요한 부분에 대한 피드백 부탁드립니다.
+
+구체적인 요청의 예시)
+- 현재 함수와 변수명을 보면 직관성이 떨어지는 것 같습니다. 함수와 변수를 더 명확하게 이름 지을 수 있는 방법에 대해 조언해주실 수 있나요?
+- 현재 파일 단위로 코드가 분리되어 있지만, 모듈화나 계층화가 부족한 것 같습니다. 어떤 기준으로 클래스를 분리하거나 모듈화를 진행하면 유지보수에 도움이 될까요?
+- MVC 패턴을 따르려고 했는데, 제가 구현한 구조가 MVC 원칙에 맞게 잘 구성되었는지 검토해주시고, 보완할 부분을 제안해주실 수 있을까요?
+- 컴포넌트 간의 의존성이 높아져서 테스트하기 어려운 상황입니다. 의존성을 낮추고 테스트 가능성을 높이는 구조 개선 방안이 있을까요?
+-->
+- 고차 컴포넌트를 사용해 각각의 컴포넌트를 `memo`로 감싸 리렌더링을 방지해봤습니다.
+예를 들어, "테마 변경 시 `Header`와 `ItemList`만 리렌더링되어야 한다"는 테스트 조건을 만족시키기 위해 `memo`를 적용했는데요. 혹시 `memo`를 사용하지 않고도 현재 구조에서 특정 컴포넌트만 리렌더링되게 제어할 수 있는 다른 방법이 있을까요? 제가 아직 특정 부분만 렌더링 시키는 거에 대한 이해가 완벽하지 않은 거 같습니다.
+- `memo`를 어디에 적용해야 할지 비슷한 질문을 밑에 코멘트로 달았습니다.
+- React에서 eslint + prettier 설정 보통 어떻게 하시는지 공유해주실 수 있나요?
+- Vue에서의 양방향 구현에 익숙하다 보니, 단방향 구현에서는 애를 먹고 있습니다... 잘 와닿지 않는데... 어떻게 해야 될까요?

@@ -1,10 +1,12 @@
 import { defineConfig as defineTestConfig, mergeConfig } from "vitest/config";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import { BASE_PATH } from "./src/constants/constants";
 
 export default mergeConfig(
   defineConfig({
     plugins: [react()],
+    base: BASE_PATH + "/",
   }),
   defineTestConfig({
     test: {
@@ -16,5 +18,5 @@ export default mergeConfig(
         reporter: ["lcov", "json", "json-summary"],
       },
     },
-  }),
+  })
 );

@@ -128,7 +128,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
           <>
             <UseMyRefTest label="rerender1" />
             <UseMyRefTest label="rerender2" />
-          </>,
+          </>
         );
 
         act(() => {
@@ -652,7 +652,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
       it("깊은 객체 비교를 수행해야 한다", () => {
         const DeepMemoizedComponent = deepMemo(TestComponent);
         const { rerender } = render(
-          <DeepMemoizedComponent value={{ a: { b: 1 } }} />,
+          <DeepMemoizedComponent value={{ a: { b: 1 } }} />
         );
 
         expect(TestComponent).toHaveBeenCalledTimes(1);
@@ -667,7 +667,7 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
       it("깊은 배열 비교를 수행해야 한다", () => {
         const DeepMemoizedComponent = deepMemo(TestComponent);
         const { rerender } = render(
-          <DeepMemoizedComponent value={[1, [2, 3]]} />,
+          <DeepMemoizedComponent value={[1, [2, 3]]} />
         );
 
         expect(TestComponent).toHaveBeenCalledTimes(1);
