@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Single Page Apps for GitHub Pages</title>
+    <script type="text/javascript">
+      var pathSegmentsToKeep = 1;
+      var l = window.location;
+      var pathname = l.pathname;
+      var search = l.search;
+      var hash = l.hash;
+
+      // 경로에서 슬래시 유지
+      var pathParts = pathname.split("/");
+      var basePath = pathParts.slice(0, 1 + pathSegmentsToKeep).join("/");
+      var remainingPath = pathParts.slice(1 + pathSegmentsToKeep).join("/");
+
+      // 리다이렉션 URL 생성
+      var redirectUrl =
+        l.protocol +
+        "//" +
+        l.hostname +
+        (l.port ? ":" + l.port : "") +
+        basePath +
+        "/?p=/" +
+        remainingPath +
+        (search ? "&q=" + search.slice(1).replace(/&/g, "~and~") : "") +
+        hash;
+
+      l.replace(redirectUrl);
+    </script>
+  </head>
+  <body></body>
+</html>

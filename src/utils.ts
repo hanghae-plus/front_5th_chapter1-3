@@ -1,5 +1,6 @@
 export function renderLog(message: string) {
-  console.log(message);
+  // console.log(message);
+  console.log(`%c ${message}`, "background:skyblue; color:white");
 }
 
 // 대규모 데이터 생성 함수
